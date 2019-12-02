@@ -32,8 +32,8 @@ def writeHeader(fileName):
 
     title = "drones"
 
-    if info[3] == "Parcels:":
-        title = "timeline"
+    if info[3] == "Parcels:":   #changes title to timeline if fileName is
+        title = "timeline"      #a parcels file
 
     new_name = title + time_next + "_" + year + "y" + month + "m" + day + ".txt"
 
