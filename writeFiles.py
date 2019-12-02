@@ -10,6 +10,7 @@ def writeHeader(fileName):
     Returns: a .txt file with the updated info
     """
 
+
     import times
     import readFiles
     
