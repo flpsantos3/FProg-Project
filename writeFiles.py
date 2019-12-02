@@ -28,9 +28,14 @@ def writeHeader(fileName):
                                         #day, month, year
     day = ddmmyy[0]
     month = ddmmyy[1] 
-    year = ddmmyy[2] 
+    year = ddmmyy[2]
 
-    new_name = "drones" + time_next + "_" + year + "y" + month + "m" + day + ".txt"
+    title = "drones"
+
+    if info[3] == "Parcels:":
+        title = "timeline"
+
+    new_name = title + time_next + "_" + year + "y" + month + "m" + day + ".txt"
 
     outputfile = open(new_name, 'w')
 
