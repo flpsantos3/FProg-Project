@@ -11,14 +11,14 @@ def new_time(time):
     """
 
     #time is a list in constants.py and contains all possible times,
-    #from 8h00 to 22h00, in 30 minute intervals
+    #from 8h00 to 20h00, in 30 minute intervals
     import constants
     
     hour = constants.time
 
     i = hour.index(time)
 
-    if time != "22h00":
+    if time != "20h00":
         time_new = constants.time[i + 1]             
     else:
         time_new = constants.time[0]
