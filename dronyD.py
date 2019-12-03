@@ -32,9 +32,10 @@ def allocate(fileNameDrones, fileNameParcels):
     #peso, tempo em min até voltar à base]
     
     
-
+    outputL = []
     i = 1
     for parcels[i] in range(len(parcels)-1):
+        pairing = []
         for drones[j] in range(len(drones)-1):
             stop = FALSE
             while stop == FALSE:
@@ -44,6 +45,11 @@ def allocate(fileNameDrones, fileNameParcels):
                             if int(parcels[i][4])+int(drones[j][4]) < int(drones[j][5]):
                                 if parcels[i][2] == drones[j][6]:
                                     if parcels[i][3] > drones[j][-1]:
+
+                                        pairing.append(parcels[i][2])
+                                        pairing.append(parcels[i][3])
+                                        pairing.append(parcels[i][1])
+                                        pairing.append(drones[j][1])
                                         #funcao que coloca nome do drone e do cliente
                                         #juntos e funcao que atualiza valores de
                                         #distancia total, autonomia, hora disponibilidade
@@ -68,6 +74,8 @@ def allocate(fileNameDrones, fileNameParcels):
                 else:
                     stop = TRUE
                     i = i + 1
+                    
+        ouputL.append(pairing)
 
 #ver se preciso de uma funcao que nao possa atribuir o drone se hora atual +
 #tempo de entrega > 20h00
