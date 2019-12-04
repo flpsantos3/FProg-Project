@@ -35,24 +35,19 @@ def allocate(fileNameDrones, fileNameParcels):
     outputL = []
     i = 1
     for parcels[i] in range(len(parcels)-1):
-        pairing = []
+
         for drones[j] in range(len(drones)-1):
             stop = FALSE
+            
             while stop == FALSE:
-                if parcels[i][1] == drones[j][1]:       #zona operaçao tem de ser igual
-                    if parcels[i][5] <= drones[j][2]:   #peso encomenda > peso max
-                        if 2*int(parcels[i][4]) <= int(drones[j][3]):   #distancia max
+                
+                if parcels[i][1] == drones[j][1] AND if parcels[i][5] <= drones[j][2]: AND if 2*int(parcels[i][4]) <= int(drones[j][3]):
                             if int(parcels[i][4])+int(drones[j][4]) < int(drones[j][5]):
-                                if parcels[i][2] == drones[j][6]: 
-                                    if parcels[i][3] > drones[j][-1]:
+                                if parcels[i][2] == drones[j][6]:   #data
+                                    if parcels[i][3] > drones[j][-1]:   #hora
 
-                                        pairing.append(parcels[i][2])
-                                        pairing.append(parcels[i][3])
-                                        pairing.append(parcels[i][1])
-                                        pairing.append(drones[j][1])
-                                        #funcao que coloca nome do drone e do cliente
-                                        #juntos e funcao que atualiza valores de
-                                        #distancia total, autonomia, hora disponibilidade
+                                        outputL.extend(organize.pairD(parcels[i],drones[j])
+                                        drones[j] = organize.updateDrone(parcels[i],drones[j])
                     
                                     else:
                                         stop = TRUE
@@ -74,8 +69,7 @@ def allocate(fileNameDrones, fileNameParcels):
                 else:
                     stop = TRUE
                     i = i + 1
-                    
-        ouputL.append(pairing)
+
 
 #ver se preciso de uma funcao que devolva "cancelled" se não existir nenhum drone
 

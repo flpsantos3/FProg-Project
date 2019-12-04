@@ -3,46 +3,45 @@
 # 55142 Filipe Santos
 # 28115 Lara Nunes
 
-def updateDrone(list1, list2):
+def updateDrone(parcel, drone):
     """Updates total distance, autonomy and time of availability for a drone with
     the data from a parcel allocated to that drone
-    Receives: list1 is a list of drone characteristics, list 2 is a list
-    representing a parcel allocated to that drone
-    Returns: a list with the updated distance, autonomy and time for the drone
+    Receives: parcel is a list of parcel characteristics, drone is a list of
+    characteristics for a drone alocated to that parcel    Returns: a list with the updated distance, autonomy and time for the drone
     """
 
     #list1 corresponds to a drone to which was allocated a parcel
     #total distance, autonomy and time of availability are calculated with
     #the values from the parcel delivery
 
-    totd = list1[4]
-    dist = int(list2[3])*2
+    dist = float(drone[3])*2
+    totd = float(drone[4])
 
-    list1[4] = str(totd - dist)
+    drone[4] = str(float(totd - dist))
 
-    auto = int(list1[5])
+    auto = float(drone[5])
 
-    list1[5] = str(auto - int(list1[4]))
+    drone[5] = str(auto - float(parcel[4]))
 
-    drone = list1[-1].split(":")
-    parcel = list2[3].split(":")
+    parc = parcel[3].split(":")
+    dron = drone[-1].split(":")
 
-    if int(drone[1]) + int(parcel[1]) >= 60:
-        drone[1] = str(int(drone[1]) + int(parcel[1]) - 60)
-        drone[0] = str(int(drone[0]) + 1)
-        if int(drone[1]) < 10:
-            drone[1] = "0" + str(drone[1])
-        if int(drone[0]) > 20:
-            drone[1] = "00"
-            drone[0] = "8"
+    if int(dron[1]) + int(parc[1]) >= 60:
+        dron[1] = str(int(dron[1]) + int(parc[1]) - 60)
+        dron[0] = str(int(dron[0]) + 1)
+        if int(dron[1]) < 10:
+            dron[1] = "0" + str(dron[1])
+        if int(dron[0]) > 20:
+            dron[1] = "00"
+            dron[0] = "8"
     else:
-        drone[1] = str(int(drone[1])+int(parcel[1]))
+        dron[1] = str(int(dron[1])+int(parc[1]))
 
-    hour = drone[0] + ":" + drone[1]
+    hour = dron[0] + ":" + dron[1]
 
-    list1[4] = hour
+    drone[-1] = hour
 
-    return list1
+    return drone
 
 
 def pairD(parcel, drone):
@@ -53,8 +52,17 @@ def pairD(parcel, drone):
     Ensures: a list with date, time, client name and drone name
     """
 
-    outputL = []
+    date = parcel[2]
+    time = parcel[3]
     cname = parcel[0]
+    dname = drone[0]
+
+    outputL = [date, time, cname, dname]
+    
+
+
+
+    
     
 
     
