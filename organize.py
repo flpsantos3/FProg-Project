@@ -3,6 +3,7 @@
 # 55142 Filipe Santos
 # 28115 Lara Nunes
 
+
 def updateDrone(parcel, drone):
     """Updates total distance, autonomy and time of availability for a drone with
     the data from a parcel allocated to that drone
@@ -44,7 +45,7 @@ def updateDrone(parcel, drone):
     return drone
 
 
-def pairD(parcel, drone):
+def pair(parcel, drone):
     """Creates a list with the date and time of delivery, the name of the
     client and the drone allocated to their order
     Requires: parcel is a list of str representing a parcel, drone is a
@@ -53,11 +54,17 @@ def pairD(parcel, drone):
     """
 
     date = parcel[2]
+    
     time = parcel[3]
+    if parcel[3] < drone[-1]:
+        time = drone[-1]
+        
     cname = parcel[0]
     dname = drone[0]
 
     outputL = [date, time, cname, dname]
+
+    return outputL
     
 
 

@@ -33,10 +33,10 @@ def new_date(date):
     Ensures: returns a str with day, month and year for the updated list
     """
 
-    data = date.split("-")
-    day = data[0]
-    month = data[1]
-    year = data[2]
+    dates = date.split("-")
+    day = dates[0]
+    month = dates[1]
+    year = dates[2]
 
     #per the project description, all months have 30 days
     #guarantees that the months change for 30+ days, and year changes for 12+ months
