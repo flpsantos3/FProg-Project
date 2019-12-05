@@ -30,7 +30,7 @@ def readHeader(fileName):
     Reads a txt file with the drones list and returns the day, time, company and scope of the file
     Requires: fileName is str, the name of a .txt file listing drones,
     following the format specified on the project
-    Ensures: returns a tuple with the day, time, company and scope of fileName
+    Ensures: returns a list with the day, time, company and scope of fileName
     """
 
     fileIn = open(fileName, 'r')
@@ -41,6 +41,7 @@ def readHeader(fileName):
     day = fileIn.readline().strip().replace("\n", "")
     fileIn.readline()
     company = fileIn.readline().strip().replace("\n", "")
+<<<<<<< Updated upstream
     fileIn.readline()
     scope = fileIn.readlines()
 
@@ -50,4 +51,12 @@ def readHeader(fileName):
         i = i + 1
     
     return time, day, company, scope
+=======
+    #fileIn.readline()
+    scope = fileIn.readline().strip().replace("\n", "")
+
+    fileIn.close()
+    
+    return [time, day, company, scope]
+>>>>>>> Stashed changes
     
