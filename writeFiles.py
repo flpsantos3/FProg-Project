@@ -34,16 +34,42 @@ def writeHeader(fileName):
     title = "drones"
 
     if info[3] == "Parcels:":   #changes title to timeline if fileName is
-        title = "timeline"      #a parcels file
+        title = "timetable"
+        info[3] = "Timeline:"
 
-    new_name = title + time_next + "_" + year + "y" + month + "m" + day + ".txt"
+    new_name = "drones" + time_next + "_" + year + "y" + month + "m" + day + ".txt"
 
-    outputfile = open(new_name, 'w')
+    fileOut = open(new_name, 'w')
 
     company = info[2]
 
-    header = "Time:\n" + time_next + "\n" + "Day:\n" + date_next + "\n" + "Company:\n" + company + "\n"
+    header = "Time:\n" + time_next + "\n" + "Day:\n" + date_next + "\n" + "Company:\n" + company + "\n" + info[3] + "\n"
 
-    outputfile.write(header)
+    fileOut.write(header)
 
-    outputfile.close()
+    return fileOut
+
+def writeBody(info, fileName):
+    """Receives a list of updated drone info or parcels and drones pairings and writes it on fileName, a .txt file
+    Receives: info is a list of either: 1) updated drone info after pairing with a parcel; 2) date, time, client name and drone name of a pairing
+    fileName is the original .txt file from where the information was read
+    Return: a .txt file with the header info from writeHeader and the info from info list
+    """
+
+    fileOut = writeHeader(fileName)
+
+    j = 0
+    for j in range(len(info)):
+        i = 0
+        for i in range(len(info[j])):
+            if i == len(info[j]) - 1:
+                info[j][i] = info[j][i] + "\n"
+                fileOut.write(info[j][i])
+            else:
+                info[j][i] = info[j][i] + ", "
+                fileOut.write(info[j][i])
+                i = i + 1
+                
+    fileOut.close()
+
+    
