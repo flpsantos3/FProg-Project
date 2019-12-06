@@ -28,17 +28,13 @@ def writeHeader(fileName):
                                         #day, month, year
     day = ddmmyy[0]
     month = ddmmyy[1] 
-<<<<<<< Updated upstream
     year = ddmmyy[2] 
-=======
-    year = ddmmyy[2]
 
     title = "drones"
 
     if info[3] == "Parcels:":   #changes title to timeline if fileName is
         title = "timetable"
         info[3] = "Timeline:"
->>>>>>> Stashed changes
 
     new_name = "drones" + time_next + "_" + year + "y" + month + "m" + day + ".txt"
 
@@ -72,12 +68,7 @@ def writeBody(info, fileName):
                 info[j][i] = info[j][i] + ", "
                 fileOut.write(info[j][i])
                 i = i + 1
-        
-    #j = 0
-    #for i in range(len(info) - 1): 
-        #fileOut.write(info[i])
-        #i = i + 1
-
+                
     fileOut.close()
 
     
