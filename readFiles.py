@@ -64,5 +64,5 @@ def readHeader(fileName):
 
     fileIn.close()
     
-    return (time, day, company, scope)
+    return [time, day, company, scope]
     

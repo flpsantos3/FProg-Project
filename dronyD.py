@@ -28,7 +28,7 @@ def allocate(fileNameDrones, fileNameParcels):
 
 
     drones = readFiles.readDronesFile(fileNameDrones)
-    parcels = readFiles.readDronesFile(filenameParcels)
+    parcels = readFiles.readDronesFile(fileNameParcels)
     
     
     #outputL = []
@@ -55,10 +55,11 @@ def allocate(fileNameDrones, fileNameParcels):
 
     writeFiles.writeBody(drones, fileNameDrones)
     writeFiles.writeBody(parcels, fileNameParcels)
+    #preciso mudar função writeBody para criar dois ficheiros diferentes; está a criar um único ficheiro!
     
 
-inputFileName1, inputFileName2 = sys.argv[1:]
+#inputFileName1, inputFileName2 = sys.argv[1:]
 
-allocate(inputFileName1, inputFileName2)
+#allocate(inputFileName1, inputFileName2)
 
 
