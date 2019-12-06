@@ -20,58 +20,42 @@ def allocate(fileNameDrones, fileNameParcels):
     transportation of parcels and the updated listing of drones, following the format
     and naming convention indicated in the project sheet.
     """
-        #to be completed
-
-    drones = readFiles.readHeader(fileNameDrones)
-    parcels = readFiles.readHeader(filenameParcels)
-
     #drones [nome, zona, peso max kg, dist max km, dist total, autonomia
     #data disponibilidade, hora disp]
 
     #parcels [nome, zona, data entrega, hora entrega, dist à base,
     #peso, tempo em min até voltar à base]
-    
-    
-    outputL = []
-    i = 1
-    for parcels[i] in range(len(parcels)-1):
 
-        for drones[j] in range(len(drones)-1):
-            stop = FALSE
+
+    drones = readFiles.readDronesFile(fileNameDrones)
+    parcels = readFiles.readDronesFile(filenameParcels)
+    
+    
+    #outputL = []
+    #i = 1
+    #for parcels[i] in range(len(parcels)-1):
+        #j = 1
+        #for drones[j] in range(len(drones)-1):
+            #stop = False
+            #while stop == False:
+                #if parcels[i][1] == drones[j][1] AND if parcels[i][5] <= drones[j][2]: AND if 2*int(parcels[i][4]) <= int(drones[j][3]):
+                            #if int(parcels[i][4])+int(drones[j][4]) < int(drones[j][5]) AND if parcels[i][2] == drones[j][6] AND if parcels[i][3] > drones[j][-1]:   
             
-            while stop == FALSE:
+                            #to be completed
+                            #função sorted; itemgetter
+                            #ver se preciso de uma funcao que devolva "cancelled" se não existir nenhum drone
+                            #else:
+                                #stop = True
+                                #j = j + 1
+                #else:
+                                #stop = True
+                                #j = j + 1
+        #i = i + 1
                 
-                if parcels[i][1] == drones[j][1] AND if parcels[i][5] <= drones[j][2]: AND if 2*int(parcels[i][4]) <= int(drones[j][3]):
-                            if int(parcels[i][4])+int(drones[j][4]) < int(drones[j][5]):
-                                if parcels[i][2] == drones[j][6]:   #data
-                                    if parcels[i][3] > drones[j][-1]:   #hora
 
-                                        outputL.extend(organize.pairD(parcels[i],drones[j])
-                                        drones[j] = organize.updateDrone(parcels[i],drones[j])
-                    
-                                    else:
-                                        stop = TRUE
-                                        i = i + 1
-                                else:
-                                    stop = TRUE
-                                    i = i + 1
-                            else:
-                                stop = TRUE
-                                i = i + 1
-
-                        else:
-                            stop = TRUE
-                            i = i + 1
-                   else:
-                        stop = TRUE
-                        i = i + 1
-
-                else:
-                    stop = TRUE
-                    i = i + 1
-
-
-#ver se preciso de uma funcao que devolva "cancelled" se não existir nenhum drone
+    writeFiles.writeBody(drones, fileNameDrones)
+    writeFiles.writeBody(parcels, fileNameParcels)
+    
 
 inputFileName1, inputFileName2 = sys.argv[1:]
 
