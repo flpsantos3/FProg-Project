@@ -22,7 +22,7 @@ def readDronesFile(fileName):
     
     fileIn = open(fileName, 'r')
 
-    drones = list(fileIn)[8:]
+    drones = list(fileIn)[7:]
 
     i = 0
     for i in range(len(drones)):

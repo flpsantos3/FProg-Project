@@ -37,7 +37,7 @@ def writeHeader(fileName):
         title = "timetable"
         info[3] = "Timeline:"
 
-    new_name = "drones" + time_next + "_" + year + "y" + month + "m" + day + ".txt"
+    new_name = title + time_next + "_" + year + "y" + month + "m" + day + ".txt"
 
     fileOut = open(new_name, 'w')
 
@@ -57,7 +57,8 @@ def writeBody(info, fileName):
     """
 
     fileOut = writeHeader(fileName)
-
+    info.pop(0)
+    
     j = 0
     for j in range(len(info)):
         i = 0
