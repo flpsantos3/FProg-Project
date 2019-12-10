@@ -15,12 +15,18 @@ def writeHeader(fileName):
     import readFiles
     
     info = readFiles.readHeader(fileName)
-
+    
+    #info is a list with the format[time, date, company, scope]
     t = info[0]
     time_next = times.new_time(t)
 
+    #if the file is the first of the day (8:00) the date changes
+    #else the date is the same as the entry file
+
+    #need to evaluate if it's working as intended for a file with 8:00 as the time
+
     d = info[1]
-    if t == "8h00":
+    if t == "8h00": #should be time_next == "8:00"??
         date_next = times.new_date(d)
     else:
         date_next = d 
@@ -33,16 +39,18 @@ def writeHeader(fileName):
 
     title = "drones"
 
-    if info[3] == "Parcels:":   #changes title to timeline if fileName is
+    if info[3] == "Parcels:":   #changes title to timeline if fileName's scope is parcels
         title = "timetable"
         info[3] = "Timeline:"
 
+    #formats fileName to fit with the intended format
     new_name = title + time_next + "_" + year + "y" + month + "m" + day + ".txt"
 
     fileOut = open(new_name, 'w')
 
     company = info[2]
 
+    #writes the header with the update info
     header = "Time:\n" + time_next + "\n" + "Day:\n" + date_next + "\n" + "Company:\n" + company + "\n" + info[3] + "\n"
 
     fileOut.write(header)
@@ -57,17 +65,17 @@ def writeBody(info, fileName):
     """
 
     fileOut = writeHeader(fileName)
-    info.pop(0)
+    info.pop(0) #removes header info (info[0]), keeping only the drones or pairings info
     
     j = 0
     for j in range(len(info)):
         i = 0
         for i in range(len(info[j])):
-            if i == len(info[j]) - 1:
+            if i == len(info[j]) - 1:   #if i is the last element of the list, the line changes
                 info[j][i] = info[j][i] + "\n"
                 fileOut.write(info[j][i])
             else:
-                info[j][i] = info[j][i] + ", "
+                info[j][i] = info[j][i] + ", "  #if the element is not the last, ", " is added to continue writing on the same line
                 fileOut.write(info[j][i])
                 i = i + 1
                 

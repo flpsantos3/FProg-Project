@@ -22,8 +22,11 @@ def readDronesFile(fileName):
     
     fileIn = open(fileName, 'r')
 
+    #converts the lines after the scope of the file into a list
+    #where each line is a different str
     drones = list(fileIn)[7:]
-
+    #goes through each line of drones and splits each characteristic into
+    #a different str
     i = 0
     for i in range(len(drones)):
         drones[i] = drones[i][:-1]
@@ -58,11 +61,14 @@ def readHeader(fileName):
     day = fileIn.readline().strip().replace("\n", "")
     fileIn.readline()
     company = fileIn.readline().strip().replace("\n", "")
-    #fileIn.readline()
+    #fileIn.readline() - removed this line so the scope is "Parcels:" or "Drones:"
+    #and not the first line of the scope
     scope = fileIn.readline().strip().replace("\n", "")
 
 
     fileIn.close()
-    
+
+    #converted the return into a list so it is possible for write.Header function
+    #to assign a new value to the scope (converts "Parcels:" into "Timeline:")
     return [time, day, company, scope]
     

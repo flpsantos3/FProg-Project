@@ -14,14 +14,16 @@ def new_time(time):
     #from 8h00 to 20h00, in 30 minute intervals
     import constants
     
-    hour = constants.time
+    hour = constants.time #constants.time is a list of str with all possible times
+                            #8:00 to 20:00 in 30 min intervals
 
-    i = hour.index(time)
+    i = hour.index(time) #gets the index in constants for the hour from the entry file
 
     if time != "20h00":
-        time_new = constants.time[i + 1]             
+        time_new = constants.time[i + 1]    #time + 30 mins
     else:
-        time_new = constants.time[0]
+        time_new = constants.time[0]    #time is 8:00 if the time for the entry file is
+                                        #20:00, the time of closing for the company
 
     return time_new
 
@@ -52,6 +54,6 @@ def new_date(date):
     else:
         day = str(int(day) + 1)
     
-    date_new = day + "-" + month + "-" + year
+    date_new = day + "-" + month + "-" + year #assembles the date in dd-mm-yyyy format
 
     return(date_new)
