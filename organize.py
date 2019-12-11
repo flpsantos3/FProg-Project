@@ -24,10 +24,6 @@ def updateDrone(list1, list2):
     hour = time[1]
     mint = time[2]
 
-<<<<<<< Updated upstream
-    
-
-=======
 def pairPD(parcel, drone):
     """Creates a list with the date and time of delivery, the name of the
     client and the drone allocated to their order
@@ -69,10 +65,7 @@ def cancelledP(parcels):
     cancelled = sorted(cancelled, key = itemgetter(2))
 
     return cancelled
-    
-        
-            
->>>>>>> Stashed changes
+
     
 
     

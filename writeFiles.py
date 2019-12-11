@@ -19,15 +19,9 @@ def writeHeaderD(fileName):
     title = "drones"
     time_next = times.new_time(t)
 
-<<<<<<< Updated upstream
-    d = info[1]
-    if t == "8h00":
-=======
     #if the file is the first of the day (8:00) the date changes
-
     d = info[1]
     if time_next == "8h00": 
->>>>>>> Stashed changes
         date_next = times.new_date(d)
     else:
         date_next = d
@@ -35,33 +29,21 @@ def writeHeaderD(fileName):
     ddmmyy = date_next.split("-")   
     day = ddmmyy[0]
     month = ddmmyy[1] 
-<<<<<<< Updated upstream
     year = ddmmyy[2] 
 
     new_name = "drones" + time_next + "_" + year + "y" + month + "m" + day + ".txt"
-=======
-    year = ddmmyy[2]
-
-    #formats fileName to fit with the intended format
-    new_name = title + time_next + "_" + year + "y" + month + "m" + day + ".txt"
->>>>>>> Stashed changes
 
     outputfile = open(new_name, 'w')
 
     company = info[2]
 
-<<<<<<< Updated upstream
-    header = "Time:\n" + time_next + "\n" + "Day:\n" + date_next + "\n" + "Company:\n" + company + "\n"
-=======
     #writes the header with the update info
     header = "Time:\n" + time_next + "\n" + "Day:\n" + date_next + "\n" + "Company:\n" + company + "\n" + "Drones:\n"
->>>>>>> Stashed changes
 
     outputfile.write(header)
 
-<<<<<<< Updated upstream
     outputfile.close()
-=======
+
     return fileOut
 
 def writeHeaderP(fileName):
@@ -153,5 +135,3 @@ def writeBodyP(info, fileName):
                 i = i + 1
                 
     fileOut.close()
-    
->>>>>>> Stashed changes
