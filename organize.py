@@ -24,8 +24,55 @@ def updateDrone(list1, list2):
     hour = time[1]
     mint = time[2]
 
+<<<<<<< Updated upstream
     
 
+=======
+def pairPD(parcel, drone):
+    """Creates a list with the date and time of delivery, the name of the
+    client and the drone allocated to their order
+    Requires: parcel is a list of str representing a parcel, drone is a
+    list of str representing a drone, with the format from the project statement
+    Ensures: a list with date, time, client name and drone name
+    """
+
+    date = parcel[2]
+    
+    time = parcel[3]
+    if parcel[3] > drone[-1]:
+        time = drone[-1]
+        
+    cname = parcel[0]
+    dname = drone[0]
+
+    outputL = [date, time, cname, dname]
+
+    return outputL
+
+def cancelledP(parcels):
+    """Receives a list of parcels that were not allocated to any drone
+    and writes them on a list where the last element is "cancelled"
+    Requires: parcels is a list of parcels not allocated to any drone
+    Ensures: returns a list of lists with all the non-allocated parcels with
+    the format [client name, date, time, "cancelled"]
+    """
+
+    from operator import itemgetter
+    
+    cancelled = []
+    for i in range(len(parcels)-1):
+        cname = parcels[i][0]
+        date = parcels[i][2]
+        time = parcels[i][3]
+        cancelled.append([date, time, cname, "cancelled"])
+
+    cancelled = sorted(cancelled, key = itemgetter(2))
+
+    return cancelled
+    
+        
+            
+>>>>>>> Stashed changes
     
 
     

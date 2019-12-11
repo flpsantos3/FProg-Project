@@ -23,6 +23,41 @@ def readDronesFile(fileName):
 
     return outputList
 
+def readParcelsFile(fileName):
+    """
+    Converts a given file listing parcels into a collection.
+    
+    Requires: fileName is str, the name of a .txt file listing parcels,
+    following the format specified in the project sheet.
+    Ensures: list whose first element is the header of fileName, followed by
+    lists corresponding to the parcels and their characteristics
+    """
+    outputList = []
+
+    header = readHeader(fileName)
+    
+    outputList.append(header)
+    
+    fileIn = open(fileName, 'r')
+
+    parcels = list(fileIn)[7:]
+    
+    i = 0
+    for i in range(len(parcels)):
+        parcels[i] = parcels[i][:-1]
+        parcels[i] = parcels[i].split(", ")
+        i = i + 1
+
+    #each drone is represented by a list with the format [name, operating zone,
+    #max weight, max range from base (m), total distance (km), autonomy (km),
+    #date of availability yyyy-mm-dd, time of availability (hh:mm)]
+
+    outputList.extend(parcels)
+
+    fileIn.close()
+
+    return outputList
+
 
 
 def readHeader(fileName):
