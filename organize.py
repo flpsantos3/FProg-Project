@@ -15,48 +15,50 @@ def updateDrone(parcel, drone):
     #total distance, autonomy and time of availability are calculated with
     #the values from the parcel delivery
 
-    #drones [nome, zona, peso max kg, dist max km, dist total, autonomia
+    #drones [nome, zona, peso max kg, dist max km, dist total km, autonomia km
     #data disponibilidade, hora disp]
 
-    #parcels [nome, zona, data entrega, hora entrega, dist à base,
+    #parcels [nome, zona, data entrega, hora entrega, dist à base metros,
     #peso, tempo em min até voltar à base]
 
     #updating drone's total distance after delivery
-    dist = float(parcel[4])
+    dist = float(parcel[4])/1000
     totD = float(drone[4])
-    drone[4] = str(float(totD + dist*2))
-
+    drone[4] = str(round(totD + dist*2, 1))
+    
     #updating autonomy after delivery
     auto = float(drone[5])
-    drone[5] = str(auto - dist)
+    drone[5] = str(round(auto - dist*2, 1))
 
     #updating time of availability after delivery
     pTime = parcel[3]
     dTime = drone[-1]
-    if dTime > pTime:
+    if dTime < pTime:
         time = pTime
     else:
         time = dTime
 
     time = time.split(":")
     hour = time[0]
-    minut = time[1]
+    mins = time[1]
     timeDeliv = parcel[-1]
-    
-    if int(time[1]) + int(time[1]) >= 60:
-        time[1] = str(int(time[1]) + int(pTime[1]) - 60)
-        time[0] = str(int(time[0]) + 1)
-        if int(dTime[1]) < 10:
-            dTime[1] = "0" + str(dTime[1])
-        if int(dron[0]) > 20:
-            dTime[1] = "00"
-            dTime[0] = "8"
-    else:
-        dTime[1] = str(int(dTime[1])+int(pTime[1]))
 
-    hour = dTime[0] + ":" + dTime[1]
+    mins = str(int(mins) + int(timeDeliv))
+    if int(mins) >= 60:
+        if int(hour) < 10:
+            hour = "0" + hour
+            mins = str(int(mins) + int(timeDeliv) - 60)
+        #deliveries that cant be finished till 20:00 get scheduled for 8:00
+        elif int(hour) > 20:
+            mins = timeDeliv
+            hour = "08"
+        else:
+            mins = str(int(mins) + int(timeDeliv) - 60)
+            hour = str(int(hour) + 1)
 
-    drone[-1] = hour
+    upTime = hour + ":" + mins
+
+    drone[-1] = upTime
 
     return drone
 
@@ -72,7 +74,7 @@ def pairPD(parcel, drone):
     date = parcel[2]
     
     time = parcel[3]
-    if parcel[3] > drone[-1]:
+    if parcel[3] < drone[-1]:
         time = drone[-1]
         
     cname = parcel[0]

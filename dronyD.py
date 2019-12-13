@@ -7,7 +7,7 @@ import sys
 import times
 import readFiles
 import writeFiles
-
+import organize
 
 def allocate(fileNameDrones, fileNameParcels):
     """
@@ -24,40 +24,59 @@ def allocate(fileNameDrones, fileNameParcels):
     droneH = readFiles.readHeader(fileNameDrones)
     parcelH = readFiles.readHeader(fileNameParcels)
 
-    #drones [nome, zona, peso max kg, dist max km, dist total, autonomia
-    #data disponibilidade, hora disp]
+    #drones data
+    dName = 0
+    dArea = 1
+    dMaxW = 2
+    dMaxDkm = 3
+    dTotalD = 4
+    dAutoKm = 5
+    dDate = 6
+    dHour = -1
 
-    #parcels [nome, zona, data entrega, hora entrega, dist à base,
-    #peso, tempo em min até voltar à base
+    #parcels data
+    pName = 0
+    pArea = 1
+    pDate = 2
+    pHour = 3
+    pMaxDm = 4
+    pWeight = 5
+    pTimeMin = -1
 
     #conditions the drones have to respect:
     #1) the area of operaation must be the same as the parcel
     #2) max weight the drone can carry must be > than the weight of the parcel
-    #3) maximum distance to base must be > than the distance of the parcel
+    #3) maximum distance to base must be > than the distance of the parcel/1000
     #4) autonomy must be enough to deliver the package and come back: sautonomy > 2*distance for the parcel
     #5) date of availability must be equal to date of delivery
     #6) hour of delivery is the earliest between the hour for the drone and the parcel
     #total distance and autonomy are float
     
-    dronAll = readFiles.readDronesFile(fileNameDrones)
-    parcAll = readFiles.readParcelsFile(fileNameParcels)
-    
-    pairings = []
-    parcels = parcAll.pop(0)
+    drones = readFiles.readDronesFile(fileNameDrones)
+    parcels = readFiles.readParcelsFile(fileNameParcels)
+
+    #removing header info
+    parcels.pop(0)
+    drones.pop(0)
+
+    #cancelled is a list that will contain parcels that were not allocated to a drone
     cancelled = parcels
 
+    #ordering drone lists by choice criteria - time, most autonomy, less distance, name
     from operator import itemgetter
-    drones = dronAll.pop(0)
-    drones = sorted(drones, key = itemgetter(-1,5,4,0))
-    
+    #NAO ESQUECER dAutoKm tem de ser reverse, mais alta primeiro
+    drones = sorted(drones, key = itemgetter(dHour, -dAutoKm, dTotalD, dName))
+    print(drones)
+    pairings = []
     i = 0
     for parcels[i] in range(len(parcels)-1):
         j = 0
         for drones[j] in range(len(drones)-1):
             stop = False
             while stop == False:
-                if drones[j][0] == parcels[i][0] and drones[j][2] >= parcels[i][5] and drones[j][3] >= parcels[i][4] and \
-                float(drones[j][5]) >= float(parcels[i][4])*2 and drones[j][6] == parcels[i][2]:
+                if drones[j][dArea] == parcels[i][pArea] and drones[j][dMaxW] >= parcels[i][pWeight] and \
+                   float(drones[j][dMaxDKm]) >= float(parcels[pMaxDm][4])/1000 and float(drones[j][dAutoKm]) >= \
+                   float(parcels[i][pMaxDm])*(2/1000) and drones[j][dDate] == parcels[i][pDate]:
                 
                                 organize.updateDrone(parcels[i], drones[j])
                                 pairings.append(organize.pairPD(parcels[i], drones[j]))
@@ -75,7 +94,7 @@ def allocate(fileNameDrones, fileNameParcels):
     writeFiles.writeBodyD(drones, fileNameDrones)
     writeFiles.writeBodyP(outputL, fileNameParcels)
     
-    #!: tarefas que nao forem completadas até às 20 passam para as 8 do dia seguinte
+    
 
 #inputFileName1, inputFileName2 = sys.argv[1:]
 

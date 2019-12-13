@@ -19,13 +19,13 @@ import dronyD
 
 #writeFiles.writeHeader("drones11h00_2019y11m5.txt")
 
-#a = "Jupiter, alvalade, 20, 2000, 500.0, 20.0, 2019-11-05, 10:15"
+a = "Jupiter, alvalade, 20, 2000, 500.0, 20.0, 2019-11-05, 10:15"
 
-#drone = a.split(", ")
+drone = a.split(", ")
 
-#b = "Daenerys Targaryen, lumiar, 2019-11-05, 11:00, 900, 15, 20"
+b = "Arya Stark, alvalade, 2019-11-05, 11:05, 1700, 15, 25"
 
-#parcel = b.split(", ")
+parcel = b.split(", ")
 
 #print(organize.updateDrone(parcel,drone))
 
