@@ -15,30 +15,46 @@ def updateDrone(parcel, drone):
     #total distance, autonomy and time of availability are calculated with
     #the values from the parcel delivery
 
-    dist = float(drone[3])*2
-    totd = float(drone[4])
+    #drones [nome, zona, peso max kg, dist max km, dist total, autonomia
+    #data disponibilidade, hora disp]
 
-    drone[4] = str(float(totd - dist))
+    #parcels [nome, zona, data entrega, hora entrega, dist à base,
+    #peso, tempo em min até voltar à base]
 
+    #updating drone's total distance after delivery
+    dist = float(parcel[4])
+    totD = float(drone[4])
+    drone[4] = str(float(totD + dist*2))
+
+    #updating autonomy after delivery
     auto = float(drone[5])
+    drone[5] = str(auto - dist)
 
-    drone[5] = str(auto - float(parcel[4]))
-
-    parc = parcel[3].split(":")
-    dron = drone[-1].split(":")
-
-    if int(dron[1]) + int(parc[1]) >= 60:
-        dron[1] = str(int(dron[1]) + int(parc[1]) - 60)
-        dron[0] = str(int(dron[0]) + 1)
-        if int(dron[1]) < 10:
-            dron[1] = "0" + str(dron[1])
-        if int(dron[0]) > 20:
-            dron[1] = "00"
-            dron[0] = "8"
+    #updating time of availability after delivery
+    pTime = parcel[3]
+    dTime = drone[-1]
+    if dTime > pTime:
+        time = pTime
     else:
-        dron[1] = str(int(dron[1])+int(parc[1]))
+        time = dTime
 
-    hour = dron[0] + ":" + dron[1]
+    time = time.split(":")
+    hour = time[0]
+    minut = time[1]
+    timeDeliv = parcel[-1]
+    
+    if int(time[1]) + int(time[1]) >= 60:
+        time[1] = str(int(time[1]) + int(pTime[1]) - 60)
+        time[0] = str(int(time[0]) + 1)
+        if int(dTime[1]) < 10:
+            dTime[1] = "0" + str(dTime[1])
+        if int(dron[0]) > 20:
+            dTime[1] = "00"
+            dTime[0] = "8"
+    else:
+        dTime[1] = str(int(dTime[1])+int(pTime[1]))
+
+    hour = dTime[0] + ":" + dTime[1]
 
     drone[-1] = hour
 
@@ -56,15 +72,15 @@ def pairPD(parcel, drone):
     date = parcel[2]
     
     time = parcel[3]
-    if parcel[3] < drone[-1]:
+    if parcel[3] > drone[-1]:
         time = drone[-1]
         
     cname = parcel[0]
     dname = drone[0]
 
-    outputL = [date, time, cname, dname]
+    pairing = [date, time, cname, dname]
 
-    return outputL
+    return pairing
     
 def cancelledP(parcels):
     """Receives a list of parcels that were not allocated to any drone
