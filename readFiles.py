@@ -25,6 +25,7 @@ def readDronesFile(fileName):
     #converts the lines after the scope of the file into a list
     #where each line is a different str
     drones = list(fileIn)[7:]
+    
     #goes through each line of drones and splits each characteristic into
     #a different str
     i = 0
@@ -71,4 +72,39 @@ def readHeader(fileName):
     #converted the return into a list so it is possible for write.Header function
     #to assign a new value to the scope (converts "Parcels:" into "Timeline:")
     return [time, day, company, scope]
+
+def readParcelsFile(fileName):
+    """
+    Converts a given file listing delivery orders into a collection.
+    
+    Requires: fileName is str, the name of a .txt file listing parcels,
+    following the format specified in the project sheet.
+    Ensures: list whose first element is the header of fileName, followed by
+    lists corresponding to the clients and the parcels they ordered
+    """
+    outputList = []
+
+    header = readHeader(fileName)
+    
+    outputList.append(header)
+    
+    fileIn = open(fileName, 'r')
+
+    parcels = list(fileIn)[8:]
+
+    i = 0
+    for i in range(len(parcels)):
+        parcels[i] = parcels[i][:-1]
+        parcels[i] = parcels[i].split(", ")
+        i = i + 1
+
+    #each drone is represented by a list with the format [name, operating zone,
+    #max weight, max range from base (m), total distance (km), autonomy (km),
+    #date of availability yyyy-mm-dd, time of availability (hh:mm)]
+
+    outputList.extend(drones)
+
+    fileIn.close()
+
+    return outputList
     

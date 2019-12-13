@@ -20,43 +20,62 @@ def allocate(fileNameDrones, fileNameParcels):
     transportation of parcels and the updated listing of drones, following the format
     and naming convention indicated in the project sheet.
     """
+
+    drones = readFiles.readHeader(fileNameDrones)
+    parcels = readFiles.readHeader(filenameParcels)
+
     #drones [nome, zona, peso max kg, dist max km, dist total, autonomia
     #data disponibilidade, hora disp]
 
     #parcels [nome, zona, data entrega, hora entrega, dist à base,
-    #peso, tempo em min até voltar à base]
+    #peso, tempo em min até voltar à base
 
-
+    #conditions the drones have to respect:
+    #1) the area of operaation must be the same as the parcel
+    #2) max weight the drone can carry must be > than the weight of the parcel
+    #3) maximum distance to base must be > than the distance of the parcel
+    #4) autonomy must be enough to deliver the package and come back: sautonomy > 2*distance for the parcel
+    #5) date of availability must be equal to date of delivery
+    #6) hour of delivery is the earliest between the hour for the drone and the parcel
+    #total distance and autonomy are float
+    
     drones = readFiles.readDronesFile(fileNameDrones)
-    parcels = readFiles.readDronesFile(fileNameParcels)
+    parcels = readFiles.readParcelsFile(fileNameParcels)
     
-    
-    #outputL = []
-    #i = 1
-    #for parcels[i] in range(len(parcels)-1):
-        #j = 1
-        #for drones[j] in range(len(drones)-1):
-            #stop = False
-            #while stop == False:
-                #if parcels[i][1] == drones[j][1] AND if parcels[i][5] <= drones[j][2]: AND if 2*int(parcels[i][4]) <= int(drones[j][3]):
-                            #if int(parcels[i][4])+int(drones[j][4]) < int(drones[j][5]) AND if parcels[i][2] == drones[j][6] AND if parcels[i][3] > drones[j][-1]:   
-            
-                            #to be completed
-                            #função sorted; itemgetter
-                            #ver se preciso de uma funcao que devolva "cancelled" se não existir nenhum drone
-                            #else:
-                                #stop = True
-                                #j = j + 1
-                #else:
-                                #stop = True
-                                #j = j + 1
-        #i = i + 1
-                
+    pairings = []
+    parcels = parcels.pop(0)
+    cancelled = parcels
 
-    writeFiles.writeBody(drones, fileNameDrones)
-    writeFiles.writeBody(parcels, fileNameParcels)
-    #preciso mudar função writeBody para criar dois ficheiros diferentes; está a criar um único ficheiro!
+    from operator import itemgetter
+    drones.pop(0)
+    drones = sorted(drones, key = itemgetter(-1,5,4,0))
+
+    i = 1
+    for parcels[i] in range(len(parcels)-1):
+        j = 0
+        for drones[j] in range(len(drones)-1):
+            stop = False
+            while stop == False:
+                if drones[j][0] == parcels[i][0] and drones[j][2] >= parcels[i][5] and drones[j][3] >= parcels[i][4] and \
+                float(drones[j][5]) >= float(parcels[i][4])*2 and drones[j][6] == parcels[i][2]:
+                
+                                organize.updateDrone(parcels[i], drones[j])
+                                pairings.append(organize.pairPD(parcels[i], drones[j]))
+                                cancelled.pop(i)
+                                
+                else:
+                    stop = True
+                    j = j + 1
+        i = i + 1
+
+    ouputL = organize.cancelledP(cancelled)
+    pairings = sorted(pairings, key = itemgetter(1,2))
+    ouputL.append(pairings)
     
+    writeFiles.writeBodyD(drones, fileNameDrones)
+    writeFiles.writeBodyP(outputL, fileNameParcels)
+    
+    #!: tarefas que nao forem completadas até às 20 passam para as 8 do dia seguinte
 
 #inputFileName1, inputFileName2 = sys.argv[1:]
 

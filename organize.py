@@ -45,7 +45,7 @@ def updateDrone(parcel, drone):
     return drone
 
 
-def pair(parcel, drone):
+def pairPD(parcel, drone):
     """Creates a list with the date and time of delivery, the name of the
     client and the drone allocated to their order
     Requires: parcel is a list of str representing a parcel, drone is a
@@ -66,17 +66,23 @@ def pair(parcel, drone):
 
     return outputL
     
+def cancelledP(parcels):
+    """Receives a list of parcels that were not allocated to any drone
+    and writes them on a list where the last element is "cancelled"
+    Requires: parcels is a list of parcels not allocated to any drone
+    Ensures: returns a list of lists with all the non-allocated parcels with
+    the format [client name, date, time, "cancelled"]
+    """
 
+    from operator import itemgetter
+    
+    cancelled = []
+    for i in range(len(parcels)-1):
+        cname = parcels[i][0]
+        date = parcels[i][2]
+        time = parcels[i][3]
+        cancelled.append([date, time, cname, "cancelled"])
 
+    cancelled = sorted(cancelled, key = itemgetter(2))
 
-    
-    
-
-    
-    
-
-    
-    
-    
-
-
+    return cancelled
