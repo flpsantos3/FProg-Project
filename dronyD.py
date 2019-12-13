@@ -22,7 +22,7 @@ def allocate(fileNameDrones, fileNameParcels):
     """
 
     drones = readFiles.readHeader(fileNameDrones)
-    parcels = readFiles.readHeader(filenameParcels)
+    parcels = readFiles.readHeader(fileNameParcels)
 
     #drones [nome, zona, peso max kg, dist max km, dist total, autonomia
     #data disponibilidade, hora disp]
