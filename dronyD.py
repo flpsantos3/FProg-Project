@@ -20,9 +20,9 @@ def allocate(fileNameDrones, fileNameParcels):
     transportation of parcels and the updated listing of drones, following the format
     and naming convention indicated in the project sheet.
     """
-
-    drones = readFiles.readHeader(fileNameDrones)
-    parcels = readFiles.readHeader(fileNameParcels)
+    
+    droneH = readFiles.readHeader(fileNameDrones)
+    parcelH = readFiles.readHeader(fileNameParcels)
 
     #drones [nome, zona, peso max kg, dist max km, dist total, autonomia
     #data disponibilidade, hora disp]
@@ -39,18 +39,18 @@ def allocate(fileNameDrones, fileNameParcels):
     #6) hour of delivery is the earliest between the hour for the drone and the parcel
     #total distance and autonomy are float
     
-    drones = readFiles.readDronesFile(fileNameDrones)
-    parcels = readFiles.readParcelsFile(fileNameParcels)
+    dronAll = readFiles.readDronesFile(fileNameDrones)
+    parcAll = readFiles.readParcelsFile(fileNameParcels)
     
     pairings = []
-    parcels = parcels.pop(0)
+    parcels = parcAll.pop(0)
     cancelled = parcels
 
     from operator import itemgetter
-    drones.pop(0)
+    drones = dronAll.pop(0)
     drones = sorted(drones, key = itemgetter(-1,5,4,0))
-
-    i = 1
+    
+    i = 0
     for parcels[i] in range(len(parcels)-1):
         j = 0
         for drones[j] in range(len(drones)-1):
