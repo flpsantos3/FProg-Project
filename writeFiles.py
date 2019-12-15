@@ -33,16 +33,14 @@ def writeHeaderD(fileName):
 
     new_name = "drones" + time_next + "_" + year + "y" + month + "m" + day + ".txt"
 
-    outputfile = open(new_name, 'w')
+    fileOut = open(new_name, 'w')
 
     company = info[2]
 
-    #writes the header with the update info
+    #writing the header with the update info
     header = "Time:\n" + time_next + "\n" + "Day:\n" + date_next + "\n" + "Company:\n" + company + "\n" + "Drones:\n"
 
-    outputfile.write(header)
-
-    outputfile.close()
+    fileOut.write(header)
 
     return fileOut
 
@@ -94,17 +92,14 @@ def writeBodyD(info, fileName):
 
     #changes line when the list of info for a particular drone/parcel ends
     #adds comma space otherwise
-    j = 0
-    for j in range(len(info)):
-        i = 0
-        for i in range(len(info[j])):
+    for j in range(0, len(info)):
+        for i in range(0, len(info[j])):
             if i == len(info[j]) - 1:
                 info[j][i] = info[j][i] + "\n"
                 fileOut.write(info[j][i])
             else:
                 info[j][i] = info[j][i] + ", "
                 fileOut.write(info[j][i])
-                i = i + 1
                 
     fileOut.close()
 
@@ -122,16 +117,14 @@ def writeBodyP(info, fileName):
 
     #changes line when the list of info for a particular drone/parcel ends
     #adds comma space otherwise
-    j = 0
-    for j in range(len(info)):
-        i = 0
-        for i in range(len(info[j])):
+    
+    for j in range(0, len(info)):
+        for i in range(0, len(info[j])):
             if i == len(info[j]) - 1:
                 info[j][i] = info[j][i] + "\n"
                 fileOut.write(info[j][i])
             else:
                 info[j][i] = info[j][i] + ", "
                 fileOut.write(info[j][i])
-                i = i + 1
                 
     fileOut.close()    

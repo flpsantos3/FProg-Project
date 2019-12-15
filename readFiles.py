@@ -22,15 +22,18 @@ def readDronesFile(fileName):
     
     fileIn = open(fileName, 'r')
 
-    #converts drone info into a list where each element is a different drone
+    #converts each line containing drone info into a list
     drones = list(fileIn)[7:]
     
-    #breaks line strings into drone characteristics
-    i = 0
+    #spliting each line into a list where each element is a different characteristic
     for i in range(len(drones)):
         drones[i] = drones[i][:-1]
         drones[i] = drones[i].split(", ")
-        i = i + 1
+
+    #removing excess blank spaces from every element except drone name
+    for i in range(len(drones)):
+        for j in range(1, len(drones[i])):
+            drones[i][j] = drones[i][j].replace(" ","")
 
     #each drone is represented by a list with the format [name, operating zone,
     #max weight, max range from base (m), total distance (km), autonomy (km),
@@ -60,13 +63,19 @@ def readParcelsFile(fileName):
     
     fileIn = open(fileName, 'r')
 
+    #converts each line containing parcel info into a list
     parcels = list(fileIn)[7:]
 
-    i = 0
+    #spliting each line into a list where each element is a different characteristic
     for i in range(len(parcels)):
         parcels[i] = parcels[i][:-1]
         parcels[i] = parcels[i].split(", ")
-        i = i + 1
+
+    #removing excess blank spaces from every element except client name
+    for i in range(len(parcels)):
+        for j in range(1, len(parcels[i])):
+            parcels[i][j] = parcels[i][j].replace(" ","")
+        
 
     #each parcel is represent by a list with the format [client name,
     #delivery zone, date of delivery, hour of delivery, dist to base in meters,

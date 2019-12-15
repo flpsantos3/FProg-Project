@@ -9,31 +9,21 @@ import dronyD
 #print(readFiles.readHeader("drones11h00_2019y11m5.txt"))
 
 #drones = readFiles.readDronesFile("drones11h00_2019y11m5.txt")
-#print(drones)
-
-#drones.pop(0)
-
-#a = sorted(drones, key=itemgetter(-1))
-
-#print(a)
-
+#parcels = readFiles.readParcelsFile("parcels11h00_2019y11m5.txt")
+#print(parcels)
 #writeFiles.writeHeader("drones11h00_2019y11m5.txt")
 
-a = "Jupiter, alvalade, 20, 2000, 500.0, 20.0, 2019-11-05, 10:15"
+#parcel = ['Bran Stark', 'alvalade', ' 2019-11-05', '11:10', '1200', '20', '30']
 
-drone = a.split(", ")
+#parcel[2] = parcel[2].replace(" ","")
 
-b = "Arya Stark, alvalade, 2019-11-05, 11:05, 1700, 15, 25"
+#print(parcel)
 
-parcel = b.split(", ")
 
 #print(organize.updateDrone(parcel,drone))
-
+#print(organize.cancelledP(cancelled))
 #print(organize.pairD(parcel,drone))
-
-#writeFiles.writeHeader("drones11h00_2019y11m5.txt")
-
-#unit tests:    
-#print(constants.dMaxDistM(0), constants.pWeightKg(1))
+#writeFiles.writeBodyP(parcels, "parcels11h00_2019y11m5.txt")
+#writeFiles.writeBodyD(drones, "drones11h00_2019y11m5.txt")
 
 dronyD.allocate("drones11h00_2019y11m5.txt","parcels11h00_2019y11m5.txt")

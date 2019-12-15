@@ -83,6 +83,7 @@ def pairPD(parcel, drone):
     pairing = [date, time, cname, dname]
 
     return pairing
+
     
 def cancelledP(parcels):
     """Receives a list of parcels that were not allocated to any drone
@@ -95,7 +96,7 @@ def cancelledP(parcels):
     from operator import itemgetter
     
     cancelled = []
-    for i in range(len(parcels)-1):
+    for i in range(0, len(parcels)):
         cname = parcels[i][0]
         date = parcels[i][2]
         time = parcels[i][3]
