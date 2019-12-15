@@ -57,3 +57,34 @@ def new_date(date):
     date_new = day + "-" + month + "-" + year #assembles the date in dd-mm-yyyy format
 
     return(date_new)
+
+def deliv_time(parcel, drone):
+    """Takes a drone and a parcel and returns the time of availability after the
+    parcel is delivered
+    Requires: parcel and drone are lists representing a parcel and a drone, respectively
+    Ensures: the final time (str) indicating the time of availability of
+    drone after parcel is delivered
+    """
+    #chosing the later time
+    time = parcel[3]
+    if parcel > drone:
+        time = drone[-1]
+
+    #splitting time into numbers
+    time = time.split(":")
+    hour = int(time[0])
+    mins = int(time[1])
+    
+    timeDeliv = int(parcel[-1])
+
+    #calculating time of availability after delivery
+    mins = mins + timeDeliv
+    if mins >= 60:
+        hour = hour + 1
+        mins = mins + timeDeliv - 60
+
+    finalTime = str(hour) + ":" + str(mins)
+
+    return finalTime
+
+    
