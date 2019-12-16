@@ -72,18 +72,20 @@ def allocate(fileNameDrones, fileNameParcels):
     pairings = []
     
     for i in range(len(parcels)):
+        pairing = True
         for j in range(len(drones)):
-            if drones[j][dArea] == parcels[i][pArea] and int(drones[j][dMaxW]) >= int(parcels[i][pWeight]) \
-               and int(drones[j][dMaxDmt]) >= int(parcels[i][pMaxDmt]) and \
-               float(drones[j][dAutoKm]) >= float(parcels[i][pMaxDmt])*(2/1000) and \
-               times.deliv_time(parcels[i],drones[j]) <= times.new_time(fileTime):
+            if pairing: 
+                if drones[j][dArea] == parcels[i][pArea] and int(drones[j][dMaxW]) >= int(parcels[i][pWeight]) \
+                   and int(drones[j][dMaxDmt]) >= int(parcels[i][pMaxDmt]) and \
+                   float(drones[j][dAutoKm]) >= float(parcels[i][pMaxDmt])*(2/1000) and \
+                   times.deliv_time(parcels[i],drones[j]) <= times.new_time(fileTime):
             
                 
-                pairings.append(organize.pairPD(parcels[i], drones[j]))
-                drones[j] = organize.updateDrone(parcels[i], drones[j])
-                drones = sorted(drones, key = itemgetter(dHour, -dAutoKm, dName))
-                cancelled.remove(parcels[i])
-                break
+                    pairings.append(organize.pairPD(parcels[i], drones[j]))
+                    drones[j] = organize.updateDrone(parcels[i], drones[j])
+                    drones = sorted(drones, key = itemgetter(dHour, -dAutoKm, dName))
+                    cancelled.remove(parcels[i])
+                    pairing = False
 
     #print(cancelled)
     #print(drones)
