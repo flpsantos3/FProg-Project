@@ -28,7 +28,7 @@ def allocate(fileNameDrones, fileNameParcels):
     dName = 0
     dArea = 1
     dMaxW = 2
-    dMaxDkm = 3
+    dMaxDmt = 3
     dTotalD = 4
     dAutoKm = 5
     dDate = 6
@@ -39,9 +39,9 @@ def allocate(fileNameDrones, fileNameParcels):
     pArea = 1
     pDate = 2
     pHour = 3
-    pMaxDm = 4
+    pMaxDmt = 4
     pWeight = 5
-    pTimeMin = -1
+    pTimeMins = -1
 
     #conditions the drones have to respect:
     #1) the area of operaation must be the same as the parcel
@@ -74,9 +74,9 @@ def allocate(fileNameDrones, fileNameParcels):
     for i in range(len(parcels)):
         for j in range(len(drones)):
             if drones[j][dArea] == parcels[i][pArea] and int(drones[j][dMaxW]) >= int(parcels[i][pWeight]) \
-               and float(drones[j][dMaxDkm]) >= float(parcels[pMaxDm][4])/1000 and \
-               float(drones[j][dAutoKm]) >= float(parcels[i][pMaxDm])*(2/1000) and \
-               times.deliv_time(parcels[i],drones[j]) < times.new_time(fileTime):
+               and int(drones[j][dMaxDmt]) >= int(parcels[i][pMaxDmt]) and \
+               float(drones[j][dAutoKm]) >= float(parcels[i][pMaxDmt])*(2/1000) and \
+               times.deliv_time(parcels[i],drones[j]) <= times.new_time(fileTime):
             
                 
                 pairings.append(organize.pairPD(parcels[i], drones[j]))

@@ -25,12 +25,15 @@ def writeHeaderD(fileName):
         date_next = times.new_date(d)
     else:
         date_next = d
-    
+
+    #splitting date string into 3 strings that can be written in the file name
     ddmmyy = date_next.split("-")   
     day = ddmmyy[0]
     month = ddmmyy[1] 
     year = ddmmyy[2] 
 
+    #"building" the new file name
+    
     new_name = "drones" + time_next + "_" + year + "y" + month + "m" + day + ".txt"
 
     fileOut = open(new_name, 'w')
@@ -41,7 +44,7 @@ def writeHeaderD(fileName):
     header = "Time:\n" + time_next + "\n" + "Day:\n" + date_next + "\n" + "Company:\n" + company + "\n" + "Drones:\n"
 
     fileOut.write(header)
-
+    #file is not closed so this function can be called after
     return fileOut
 
 def writeHeaderP(fileName):
@@ -72,10 +75,11 @@ def writeHeaderP(fileName):
 
     fileOut = open(new_name, 'w')
 
+    #writing the header with the update info
     header = "Time:\n" + time + "\n" + "Day:\n" + date + "\n" + "Company:\n" + company + "\n" + "Timetable:\n"
 
     fileOut.write(header)
-
+    #file is not closed so this function can be called after
     return fileOut
 
 def writeBodyD(info, fileName):
@@ -86,12 +90,9 @@ def writeBodyD(info, fileName):
     """
     
     fileOut = writeHeaderD(fileName)
-    
-    #removes header info (info[0]), keeping only the drones or pairings info
-    info.pop(0) 
 
-    #changes line when the list of info for a particular drone/parcel ends
-    #adds comma space otherwise
+    #writing each element of a list to the output file;
+    #changing lines after the last element of the list
     for j in range(0, len(info)):
         for i in range(0, len(info[j])):
             if i == len(info[j]) - 1:
@@ -111,13 +112,9 @@ def writeBodyP(info, fileName):
     """
     
     fileOut = writeHeaderP(fileName)
-    
-    #removes header info (info[0]), keeping only the drones or pairings info
-    info.pop(0) 
 
-    #changes line when the list of info for a particular drone/parcel ends
-    #adds comma space otherwise
-    
+    #writing each element of a list to the output file;
+    #changing lines after the last element of the list
     for j in range(0, len(info)):
         for i in range(0, len(info[j])):
             if i == len(info[j]) - 1:
