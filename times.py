@@ -5,28 +5,26 @@
 
 
 def new_time(time):
-    """Receives the time from the previous drone list and returns the date for the updated list
-    Requires: time is string
-    Ensures: returns a string with the time for the updated drone list
+    """Receives the time from the previous drone list and returns
+    the time for the updated list
+    Requires: time is str, with the format HHhMM
+    Ensures: a string with the time for the updated drone list
     """
 
     #time is a list in constants.py and contains all possible times,
     #from 8h00 to 20h00, in 30 minute intervals
     import constants
     
-    hour = constants.time #constants.time is a list of str with all possible times
-                            #8:00 to 20:00 in 30 min intervals
+    hour = constants.time
 
-    i = hour.index(time) #gets the index in constants for the hour from the entry file
-
+    #advancing the time 30 mins or to 8:00, in case the original time is 20:00
+    i = hour.index(time) 
     if time != "20h00":
-        time_new = constants.time[i + 1]    #time + 30 mins
+        newTime = constants.time[i + 1]    
     else:
-        time_new = constants.time[0]    #time is 8:00 if the time for the entry file is
-                                        #20:00, the time of closing for the company
-
-    return time_new
-
+        newTime = constants.time[0]
+        
+    return newTime
 
 
 def new_date(date):
@@ -35,28 +33,42 @@ def new_date(date):
     Ensures: returns a str with day, month and year for the updated list
     """
 
-    dates = date.split("-")
-    day = dates[0]
-    month = dates[1]
-    year = dates[2]
+    date = date.split("-")
+    day = int(date[0])
+    month = int(date[1])
+    year = int(date[2])
 
-    #per the project description, all months have 30 days
-    #guarantees that the months change for 30+ days, and year changes for 12+ months
+    #advancing to the next day, changing month and/or year if needed
+    day = day + 1
+    if day > 30:
+        day = "01"
+        month = month + 1
+        if month > 12:
+            month = "01"
+            year = year + 1
+        elif month < 10:
+            month = "0" + str(month)
+            
+    elif day < 10:
+            day = "0" + str(day)
 
-    if day == "30":
-        if month == "12":
-            year = str(int(year) + 1)
-            month = "1"
-            day = "1"
-        else:
-            month = str(int(month) + 1)
-            day = "1"
+    newDate = day + "-" + month + "-" + year 
+
+    return newDate
+
+
+def laterTime(time1, time2):
+    """Receives two strings representing time (hh:mm) and returns the later
+    between them
+    Requires: time1, time2 are str, with the format hh:mm
+    Ensures: the later between time1 and time 2
+    """
+
+    if time1 > time2:
+        return time1
     else:
-        day = str(int(day) + 1)
-    
-    date_new = day + "-" + month + "-" + year #assembles the date in dd-mm-yyyy format
+        return time2
 
-    return(date_new)
 
 def deliv_time(parcel, drone):
     """Takes a drone and a parcel and returns the time of availability after the
@@ -66,15 +78,14 @@ def deliv_time(parcel, drone):
     drone after parcel is delivered
     """
     #chosing the later time
-    time = parcel[3]
-    if parcel > drone:
-        time = drone[-1]
+    timeP = parcel[3]
+    timeD = drone[-1]
+    time = laterTime(timeP, timeD)
 
     #splitting time into numbers
     time = time.split(":")
     hour = int(time[0])
     mins = int(time[1])
-    
     timeDeliv = int(parcel[-1])
 
     #calculating time of availability after delivery
@@ -87,4 +98,33 @@ def deliv_time(parcel, drone):
 
     return finalTime
 
+
+def nextDay(firstDate):
+    """Receives a date with the format yyyy-mm-dd and returns the following date
+    Requires: firstdate is str, with the format yyyy-mm-dd
+    Ensures: a str with the format yyyy-mm-dd, corresponding to the date after
+    firstDate
+    """
+
+    #this functon is similar to new_date but returns a different date format
+    date = firstDate.split("-")
+    day = int(date[2])
+    month = int(date[1])
+    year = int(date[0])
     
+    #advancing to the next day, changing month and/or year if needed
+    day = day + 1
+    if day > 30:
+        day = "01"
+        month = month + 1
+        if month > 12:
+            month = "01"
+            year = year + 1
+        elif month < 10:
+            month = "0" + str(month)
+    elif day < 10:
+            day = "0" + str(day)
+            
+    newDate = str(year) + "-" + str(month) + "-" + str(day)
+
+    return newDate
