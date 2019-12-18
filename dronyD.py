@@ -78,27 +78,26 @@ def allocate(fileNameDrones, fileNameParcels):
                 if drones[j][dArea] == parcels[i][pArea] and int(drones[j][dMaxW]) >= int(parcels[i][pWeight]) \
                    and int(drones[j][dMaxDmt]) >= int(parcels[i][pMaxDmt]) and \
                    float(drones[j][dAutoKm]) >= float(parcels[i][pMaxDmt])*(2/1000) and \
-                   times.deliv_time(parcels[i],drones[j]) <= times.new_time(fileTime):
+                   times.deliv_time(parcels[i],drones[j]) <= times.new_time(fileTime) and \
+                   drones[j][dDate] == parcels[i][pDate]:
             
                 
                     pairings.append(organize.pairPD(parcels[i], drones[j]))
                     drones[j] = organize.updateDrone(parcels[i], drones[j])
-                    drones = sorted(drones, key = itemgetter(dHour, -dAutoKm, dName))
+                    drones = sorted(drones, key = itemgetter(dDate, dHour, -dAutoKm, dName))
                     cancelled.remove(parcels[i])
                     pairing = False
 
-    #print(cancelled)
-    #print(drones)
-    #print(pairings)
     #cancelled parcels first
     timeline = organize.cancelledP(cancelled)
+    
     #ordering pairings by time then client name
-    pairings = sorted(pairings, key = itemgetter(1,2))
+    pairings = sorted(pairings, key = itemgetter(0,1,2))
+    
     #adding each item of pairings to timeline
     for i in range(0, len(pairings)):
         timeline.append(pairings[i])
-
-    #Resolver: funções write não escrevem primeiro elemento de drones/timeline
+        
     writeFiles.writeBodyD(drones, fileNameDrones)
     writeFiles.writeBodyP(timeline, fileNameParcels)
     

@@ -3,6 +3,7 @@
 # 55142 Filipe Santos
 # 28115 Lara Nunes
 
+import times
 
 def updateDrone(parcel, drone):
     """Updates total distance, autonomy and time of availability for a drone with
@@ -10,11 +11,7 @@ def updateDrone(parcel, drone):
     Receives: parcel is a list of parcel characteristics, drone is a list of
     characteristics for a drone alocated to that parcel    Returns: a list with the updated distance, autonomy and time for the drone
     """
-
-    #list1 corresponds to a drone to which was allocated a parcel
-    #total distance, autonomy and time of availability are calculated with
-    #the values from the parcel delivery
-
+    
     #drones [nome, zona, peso max kg, dist max km, dist total km, autonomia km
     #data disponibilidade, hora disp]
 
@@ -30,6 +27,12 @@ def updateDrone(parcel, drone):
     auto = float(drone[5])
     drone[5] = str(round(auto - dist*2, 1))
 
+    #storing date of availability in case the parcel is delivered on the next day
+    date = drone[6].split("-")
+    day = int(date[2])
+    month = int(date[1])
+    year = int(date[0])
+
     #updating time of availability after delivery
     pTime = parcel[3]
     dTime = drone[-1]
@@ -39,27 +42,43 @@ def updateDrone(parcel, drone):
         time = dTime
 
     time = time.split(":")
-    hour = time[0]
-    mins = time[1]
-    timeDeliv = parcel[-1]
+    hour = int(time[0])
+    mins = int(time[1])
+    timeDeliv = int(parcel[-1])
 
-    mins = str(int(mins) + int(timeDeliv))
-    if int(mins) >= 60:
-        if int(hour) < 10:
-            hour = "0" + hour
-            mins = str(int(mins) + int(timeDeliv) - 60)
+    mins = mins + timeDeliv
+    if mins > 60:
+        hour = hour + 1
+        mins = mins + timeDeliv - 60
         #deliveries that cant be finished till 20:00 get scheduled for 8:00
-        elif int(hour) > 20:
+        if hour >= 20 and mins > 0:
             mins = timeDeliv
-            hour = "08"
-        else:
-            mins = str(int(mins) + int(timeDeliv) - 60)
-            hour = str(int(hour) + 1)
+            hour = "8"
+            day = day + 1
+            if day > 30:
+                day = "01"
+                month = month + 1
+                if month > 12:
+                    month = "01"
+                    year = year + 1
+                elif month < 10:
+                    month = "0" + str(month)
+            elif day < 10:
+                day = "0" + str(day)
+            drone[6] = str(year) + "-" + str(month) + "-" + str(day)
+    elif mins == 60:
+        mins = "0"
+        hour = hour + 1
 
-    upTime = hour + ":" + mins
-
+    if int(hour) < 10:
+        hour = "0" + str(hour)
+    if int(mins) < 10:
+        mins = "0" + str(mins)
+        
+    upTime = str(hour) + ":" + str(mins)
+    
     drone[-1] = upTime
-
+    
     return drone
 
 
@@ -71,11 +90,36 @@ def pairPD(parcel, drone):
     Ensures: a list with date, time, client name and drone name
     """
 
+    from times import deliv_time
+    timeD = drone[-1]
+    timeP = parcel[3]
+    timeDeliv = times.deliv_time(parcel, drone)
     date = parcel[2]
     
-    time = parcel[3]
-    if parcel[3] < drone[-1]:
-        time = drone[-1]
+    if timeP > timeD:
+        time = timeP
+    else:
+        time = timeD
+
+    if timeDeliv > "20:00":
+        time = "08:00"
+        date = parcel[2]
+        date = date.split("-")
+        day = int(date[2])
+        month = int(date[1])
+        year = int(date[0])
+        day = day + 1
+        if day > 30:
+                day = "01"
+                month = month + 1
+                if month > 12:
+                    month = "01"
+                    year = year + 1
+                elif month < 10:
+                    month = "0" + str(month)
+        elif day < 10:
+            day = "0" + str(day)
+        date = str(year) + "-" + str(month) + "-" + str(day)            
         
     cname = parcel[0]
     dname = drone[0]
