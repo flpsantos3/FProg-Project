@@ -4,6 +4,7 @@
 # 28115 Lara Nunes
 
 import times
+import readFiles
 
 def updateDrone(parcel, drone):
     """Updates total distance, autonomy and time of availability for a drone with
@@ -11,12 +12,6 @@ def updateDrone(parcel, drone):
     Receives: parcel is a list of parcel characteristics, drone is a list of
     characteristics for a drone alocated to that parcel    Returns: a list with the updated distance, autonomy and time for the drone
     """
-    
-    #drones [nome, zona, peso max kg, dist max km, dist total km, autonomia km
-    #data disponibilidade, hora disp]
-
-    #parcels [nome, zona, data entrega, hora entrega, dist à base metros,
-    #peso, tempo em min até voltar à base]
 
     #updating drone's total distance after delivery
     dist = float(parcel[4])/1000
@@ -27,45 +22,31 @@ def updateDrone(parcel, drone):
     auto = float(drone[5])
     drone[5] = str(round(auto - dist*2, 1))
 
-    #storing date of availability in case the parcel is delivered on the next day
-    date = drone[6].split("-")
-    day = int(date[2])
-    month = int(date[1])
-    year = int(date[0])
+    #storing date of availability in case the parcel is delivered
+    #on the next day
+    date = drone[6]
 
     #updating time of availability after delivery
     pTime = parcel[3]
     dTime = drone[-1]
-    if dTime < pTime:
-        time = pTime
-    else:
-        time = dTime
-
+    timeDeliv = int(parcel[-1])
+    
+    time = times.laterTime(pTime, dTime)
     time = time.split(":")
     hour = int(time[0])
     mins = int(time[1])
-    timeDeliv = int(parcel[-1])
-
+    
     mins = mins + timeDeliv
+    #changing hour if needed
     if mins > 60:
-        hour = hour + 1
         mins = mins + timeDeliv - 60
-        #deliveries that cant be finished till 20:00 get scheduled for 8:00
+        hour = hour + 1
+        #deliveries that can't be finished till 20:00 get scheduled for 8:00
+        #of the next day
         if hour >= 20 and mins > 0:
             mins = timeDeliv
             hour = "8"
-            day = day + 1
-            if day > 30:
-                day = "01"
-                month = month + 1
-                if month > 12:
-                    month = "01"
-                    year = year + 1
-                elif month < 10:
-                    month = "0" + str(month)
-            elif day < 10:
-                day = "0" + str(day)
-            drone[6] = str(year) + "-" + str(month) + "-" + str(day)
+            drone[6] = times.nextDay(date)
     elif mins == 60:
         mins = "0"
         hour = hour + 1
@@ -87,42 +68,25 @@ def pairPD(parcel, drone):
     client and the drone allocated to their order
     Requires: parcel is a list of str representing a parcel, drone is a
     list of str representing a drone, with the format from the project statement
-    Ensures: a list with date, time, client name and drone name
+    Ensures: a list with date and time of delivery, client name and drone name
     """
 
-    from times import deliv_time
     timeD = drone[-1]
     timeP = parcel[3]
-    timeDeliv = times.deliv_time(parcel, drone)
     date = parcel[2]
-    
-    if timeP > timeD:
-        time = timeP
-    else:
-        time = timeD
-
-    if timeDeliv > "20:00":
-        time = "08:00"
-        date = parcel[2]
-        date = date.split("-")
-        day = int(date[2])
-        month = int(date[1])
-        year = int(date[0])
-        day = day + 1
-        if day > 30:
-                day = "01"
-                month = month + 1
-                if month > 12:
-                    month = "01"
-                    year = year + 1
-                elif month < 10:
-                    month = "0" + str(month)
-        elif day < 10:
-            day = "0" + str(day)
-        date = str(year) + "-" + str(month) + "-" + str(day)            
-        
     cname = parcel[0]
     dname = drone[0]
+    
+    #the time of delivery is the later of the two times
+    time = times.laterTime(timeP, timeD)
+        
+    #calculating the time after the parcel is delivered
+    timeDeliv = times.deliv_time(parcel, drone)
+    
+    #parcels that can't be delivered until 20:00 are delivered the next day
+    if timeDeliv > "20:00":
+        time = "08:00"
+        date = times.nextDay(parcel[2])
 
     pairing = [date, time, cname, dname]
 
@@ -131,10 +95,12 @@ def pairPD(parcel, drone):
     
 def cancelledP(parcels):
     """Receives a list of parcels that were not allocated to any drone
-    and writes them on a list where the last element is "cancelled"
-    Requires: parcels is a list of parcels not allocated to any drone
-    Ensures: returns a list of lists with all the non-allocated parcels with
-    the format [client name, date, time, "cancelled"]
+    and writes date, time and client name on a list where the last
+    element is "cancelled"
+    Requires: parcels is a list of str, representing parcels not allocated
+    to any drone
+    Ensures: a list of lists (of str) with the info for all non-allocated
+    parcels and the format [client name, date, time, "cancelled"]
     """
 
     from operator import itemgetter
@@ -146,6 +112,72 @@ def cancelledP(parcels):
         time = parcels[i][3]
         cancelled.append([date, time, cname, "cancelled"])
 
+    #sorting by client name
     cancelled = sorted(cancelled, key = itemgetter(2))
 
     return cancelled
+
+def compareHeader(fileParcels, fileDrones):
+    """Receives two .txt files containing parcels and drones and compares
+    their headers, returning True if equal, False otherwise
+    Requires: fileParcels, fileDrones are str, the name of two .txt files
+    containing info for parcels and drones, respectively
+    Ensures: True if the headers of the file are equal (minus scope),
+    False if any of date, time or company are different
+    """
+
+    parcHead = readFiles.readHeader(fileParcels)
+    dronHead = readFiles.readHeader(fileDrones)
+    
+    if parcHead[0] == dronHead[0] and parcHead[1] == dronHead[1] and \
+       parcHead[2] == dronHead[2]:
+        return True
+    
+    else:
+        return False
+
+def titleHeader(fileName):
+    """Receives a string representing the title of a .txt file containing info
+    for parcels or drones and compares its title to the contents of the header
+    inside, returning True if they match and False otherwise
+    Requires: fileName is str, the name of a .txt file containing parcels or
+    drones info
+    Ensures: True if the name of the file matches all the contents of its
+    header (minus company), False otherwise
+    """
+    
+    #removing .txt from the title
+    title = fileName[:-4]
+
+    #separating scope, time and date info
+    title = title.split("_")
+    scopeTime = title[0].split("s")
+    titleScope = scopeTime[0]
+    titleTime = scopeTime[1]
+
+    #formating title date to match the header date info format
+    date = title[1]
+    date = date.split("y")
+    year = date[0]
+    monthday = date[1]
+    monthday = monthday.split("m")
+    month = monthday[0]
+    day = monthday[1]
+    titleDate = day + "-" + month + "-" + year
+
+    header = readFiles.readHeader("drones19h30_2019y11m5.txt")
+    headerTime = header[0]
+    headerDate = header[1]
+    #formatting header scope to the same format as the title scope
+    headerScope = header[-1].lower()
+    headerScope = headerScope[:-2]  #removes "s:"
+
+    if headerScope == titleScope and headerTime == titleTime and \
+       headerDate == titleDate:
+        return True
+
+    else:
+        return False
+    
+    
+    
