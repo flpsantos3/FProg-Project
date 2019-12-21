@@ -45,9 +45,7 @@ def allocate(fileNameDrones, fileNameParcels):
     #2) max weight the drone can carry must be > than the weight of the parcel
     #3) maximum distance to base must be > than the distance of the parcel/1000
     #4) autonomy must be enough to deliver the package and come back: autonomy > 2*distance for the parcel
-    #5) date of availability must be equal to date of delivery
-    #6) hour of delivery is the later between the hour for the drone and the parcel
-    #total distance and autonomy are float
+    #5) hour of delivery is the later between the hour for the drone and the parcel
     
     drones = readFiles.readDronesFile(fileNameDrones)
     parcels = readFiles.readParcelsFile(fileNameParcels)
@@ -62,34 +60,46 @@ def allocate(fileNameDrones, fileNameParcels):
     #cancelled is a list that will contain only parcels that were not allocated
     #after a parcel is allocated, it's removed from cancelled
     cancelled = parcels[:]
+    #pairings is an empty list where paired parcels and drones will be stored
     pairings = []
-    
+
+    #converting autonomy (index 5) to float so it can be ordered in reverse
+    for a in range(len(drones)):
+        for b in range(len(drones[a])):
+            drones[a][dAutoKm] = float(drones[a][dAutoKm])
+
     #ordering drone lists by choice criteria - time, most autonomy, less distance, name
     from operator import itemgetter
-    drones = sorted(drones, key = itemgetter(dHour, -dAutoKm, dTotalD, dName))
+    drones = sorted(drones,key = lambda d:(d[dHour], -d[dAutoKm], d[dTotalD], d[dName]))
     
     for i in range(len(parcels)):
         pairing = True
         for j in range(len(drones)):
             if pairing: 
-                if drones[j][dArea] == parcels[i][pArea] and int(drones[j][dMaxW]) >= int(parcels[i][pWeight]) \
-                   and int(drones[j][dMaxDmt]) >= int(parcels[i][pMaxDmt]) and \
-                   float(drones[j][dAutoKm]) >= float(parcels[i][pMaxDmt])*(2/1000) and \
-                   times.deliv_time(parcels[i],drones[j]) <= times.new_time(fileTime):
+                if drones[j][dArea] == parcels[i][pArea] and int(drones[j][dMaxW]) \
+                   >= int(parcels[i][pWeight]) and int(drones[j][dMaxDmt]) >= \
+                   int(parcels[i][pMaxDmt]) and float(drones[j][dAutoKm]) >= \
+                   float(parcels[i][pMaxDmt])*(2/1000):
                             
                     pairings.append(organize.pairPD(parcels[i], drones[j]))
                     drones[j] = organize.updateDrone(parcels[i], drones[j])
-                    drones = sorted(drones, key = itemgetter(dDate, dHour, -dAutoKm, dTotalD, dName))
+                    drones = sorted(drones,key = lambda d:(d[dHour], -d[dAutoKm], \
+                                                           d[dTotalD], d[dName]))
                     cancelled.remove(parcels[i])
                     pairing = False
-
+                    
     #sorting drones by file ordering criteria: time > most autonomy > drone name
-    drones = sorted(drones, key = itemgetter(dDate, dHour, -dAutoKm, dName))
-    
+    drones = sorted(drones,key = lambda d:(d[dDate], d[dHour], -d[dAutoKm], d[dName]))
+
+    #converting autonomy back to str, to be written in the file
+    for x in range(len(drones)):
+        for y in range(len(drones[x])):
+            drones[x][dAutoKm] = str(drones[x][dAutoKm])
+            
     #cancelled parcels first
     timeline = organize.cancelledP(cancelled)
     
-    #ordering pairings by time then client name
+    #ordering pairings by date, time then client name
     pairings = sorted(pairings, key = itemgetter(0,1,2))
     
     #adding each item of pairings to timeline

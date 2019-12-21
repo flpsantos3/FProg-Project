@@ -4,7 +4,7 @@
 # 28115 Lara Nunes
 
 
-def new_time(time):
+def newTime(time):
     """Receives the time from the previous drone list and returns
     the time for the updated list
     Requires: time is str, with the format HHhMM
@@ -27,7 +27,7 @@ def new_time(time):
     return newTime
 
 
-def new_date(date):
+def newDate(date):
     """Receives the date from the previous drone list and returns the date for the updated list
     Requires: date is str with day-month-year format
     Ensures: returns a str with day, month and year for the updated list
@@ -70,7 +70,7 @@ def laterTime(time1, time2):
         return time2
 
 
-def deliv_time(parcel, drone):
+def delivTime(parcel, drone):
     """Takes a drone and a parcel and returns the time of availability after the
     parcel is delivered
     Requires: parcel and drone are lists representing a parcel and a drone, respectively
@@ -90,9 +90,12 @@ def deliv_time(parcel, drone):
 
     #calculating time of availability after delivery
     mins = mins + timeDeliv
-    if mins >= 60:
+    if mins > 60:
         hour = hour + 1
         mins = mins + timeDeliv - 60
+    elif mins == 60:
+        mins = "00"
+        hour = hour + 1
 
     finalTime = str(hour) + ":" + str(mins)
 

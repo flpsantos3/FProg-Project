@@ -20,7 +20,7 @@ def updateDrone(parcel, drone):
     
     #updating autonomy after delivery
     auto = float(drone[5])
-    drone[5] = str(round(auto - dist*2, 1))
+    drone[5] = round(auto - dist*2, 1)
 
     #storing date of availability in case the parcel is delivered
     #on the next day
@@ -81,7 +81,7 @@ def pairPD(parcel, drone):
     time = times.laterTime(timeP, timeD)
         
     #calculating the time after the parcel is delivered
-    timeDeliv = times.deliv_time(parcel, drone)
+    timeDeliv = times.delivTime(parcel, drone)
     
     #parcels that can't be delivered until 20:00 are delivered the next day
     if timeDeliv > "20:00":
@@ -117,6 +117,7 @@ def cancelledP(parcels):
 
     return cancelled
 
+    
 def compareHeader(fileParcels, fileDrones):
     """Receives two .txt files containing parcels and drones and compares
     their headers, returning True if equal, False otherwise
@@ -168,9 +169,9 @@ def titleHeader(fileName):
     header = readFiles.readHeader("drones19h30_2019y11m5.txt")
     headerTime = header[0]
     headerDate = header[1]
-    #formatting header scope to the same format as the title scope
+    #formatting header scope to the same format as title scope
     headerScope = header[-1].lower()
-    headerScope = headerScope[:-2]  #removes "s:"
+    headerScope = headerScope[:-2]  #removes "s:" to be able to directly compare the 2 strings
 
     if headerScope == titleScope and headerTime == titleTime and \
        headerDate == titleDate:
@@ -178,6 +179,7 @@ def titleHeader(fileName):
 
     else:
         return False
+    
     
     
     

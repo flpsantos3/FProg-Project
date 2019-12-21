@@ -2,24 +2,8 @@ import readFiles
 import writeFiles
 import organize
 from operator import itemgetter
-import constants
+import times
 import dronyD
-
-fileName = "drones15h30_2019y11m4.txt"
-
-print(organize.titleHeader(fileName))
-
-#dronyD.allocate("drones11h00_2019y11m5.txt","parcels11h00_2019y11m5.txt")
-    #erro na autonomia final dos drones
-
-#dronyD.allocate("drones15h30_2019y11m4.txt","parcels15h30_2019y11m4.txt")
-    #erro no tempo (15:10)- para testar exceções
-
-#dronyD.allocate("drones16h00_2019y11m5.txt","parcels16h00_2019y11m5.txt")
-    #pat riley aparece cancelled mas nao devia
-
-#dronyD.allocate("drones19h30_2019y11m5.txt","parcels19h30_2019y11m5.txt")
-    #erro na ordem dos drones; nome do drone devia vir primeiro
 
 #drones data
 dName = 0
@@ -48,5 +32,42 @@ pTimeMin = -1
 #5) date of availability must be equal to date of delivery
 #6) hour of delivery is the earliest between the hour for the drone and the parce
 #total distance and autonomy are float
+#fileName = "drones15h30_2019y11m4.txt"
 
+#parcel = ["Lando Alguersuari", "alvalade", "2019-11-05", "19:35", "1700", "15", "25"]
+#drone = ["Buick", "alvalade", "20", "2000", "500.0", 20.0, "2019-11-05", "19:00"]
+#timeDeliv = times.delivTime(parcel, drone)
+#print(timeDeliv)
 
+#fileName = "drones15h30_2019y11m4.txt"
+#print(organize.titleHeader(fileName))
+
+dronyD.allocate("drones11h00_2019y11m5.txt","parcels11h00_2019y11m5.txt")
+    #erro na autonomia final dos drones
+
+#dronyD.allocate("drones15h30_2019y11m4.txt","parcels15h30_2019y11m4.txt")
+    #erro no tempo (15:10)- para testar exceções
+
+dronyD.allocate("drones16h00_2019y11m5.txt","parcels16h00_2019y11m5.txt")
+    #pat riley aparece cancelled mas nao devia
+
+dronyD.allocate("drones19h30_2019y11m5.txt","parcels19h30_2019y11m5.txt")
+    #ver time_deliv + mins == 20
+
+#drones = readFiles.readDronesFile("drones19h30_2019y11m5.txt")
+#drones.pop(0)
+#drones = sorted(drones, key = itemgetter(dAutoKm), reverse = True)
+#sorted(drones,key=lambda d:(d[dDate], d[dHour], -d[dAutoKm), \
+#d[dTotalD], d[dName])
+#for i in range(len(drones)):
+    #for j in range(len(drones[i])):
+        #drones[i][5] = float(drones[i][5])               
+#drones = sorted(drones,key = lambda d:(d[dDate], d[dHour], -d[dAutoKm], \
+#d[dTotalD], d[dName]))
+#print(drones)
+
+#for i in range(len(drones)):
+    #for j in range(len(drones[i])):
+        #drones[i][5] = str(drones[i][5])   
+
+#print(drones)

@@ -3,45 +3,44 @@
 # 55142 Filipe Santos
 # 28115 Lara Nunes
 
-
+import times
+import readFiles
+    
 def writeHeaderD(fileName):
     """Uses the header info from a file of drones to write a new file
     Requires: fileName is str, the name of a .txt file listing available drones
     Returns: a .txt file with the updated header, where the scope is "Drones:"
     """
 
-    import times
-    import readFiles
-    
     info = readFiles.readHeader(fileName)
 
     t = info[0]
     title = "drones"
-    time_next = times.new_time(t)
+    timeNext = times.newTime(t)
 
     #if the file is the first of the day (8:00) the date changes
     d = info[1]
-    if time_next == "8h00": 
-        date_next = times.new_date(d)
+    if timeNext == "8h00": 
+        dateNext = times.new_date(d)
     else:
-        date_next = d
+        dateNext = d
 
     #splitting date string into 3 strings that can be written in the file name
-    ddmmyy = date_next.split("-")   
+    ddmmyy = dateNext.split("-")   
     day = ddmmyy[0]
     month = ddmmyy[1] 
     year = ddmmyy[2] 
 
     #"building" the new file name
     
-    new_name = "drones" + time_next + "_" + year + "y" + month + "m" + day + ".txt"
+    newName = "drones" + timeNext + "_" + year + "y" + month + "m" + day + ".txt"
 
-    fileOut = open(new_name, 'w')
+    fileOut = open(newName, 'w')
 
     company = info[2]
 
     #writing the header with the update info
-    header = "Time:\n" + time_next + "\n" + "Day:\n" + date_next + "\n" + "Company:\n" + company + "\n" + "Drones:\n"
+    header = "Time:\n" + timeNext + "\n" + "Day:\n" + dateNext + "\n" + "Company:\n" + company + "\n" + "Drones:\n"
 
     fileOut.write(header)
     #file is not closed so this function can be called after
@@ -53,8 +52,6 @@ def writeHeaderP(fileName):
     Returns: a .txt file with the updated info
     """
 
-    import times
-    import readFiles
     
     info = readFiles.readHeader(fileName)
     
@@ -71,9 +68,9 @@ def writeHeaderP(fileName):
     year = ddmmyy[2]
 
     #formats fileName to fit with the intended format
-    new_name = title + time + "_" + year + "y" + month + "m" + day + ".txt"
+    newName = title + time + "_" + year + "y" + month + "m" + day + ".txt"
 
-    fileOut = open(new_name, 'w')
+    fileOut = open(newName, 'w')
 
     #writing the header with the update info
     header = "Time:\n" + time + "\n" + "Day:\n" + date + "\n" + "Company:\n" + company + "\n" + "Timetable:\n"
