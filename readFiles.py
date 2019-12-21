@@ -83,6 +83,7 @@ def readParcelsFile(fileName):
 def readHeader(fileName):
     """
     Reads a .txt file and returns the day, time, company and scope of the file
+    
     Requires: fileName is str, the name of a .txt file listing drones,
     following the format specified on the project
     Ensures: returns a list with the day, time, company and scope of fileName

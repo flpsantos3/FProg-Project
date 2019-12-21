@@ -9,8 +9,9 @@ import readFiles
 def writeHeaderD(fileName):
     """Uses the header info from a file of drones to write a new file, updating
     time and date (if needed)
+    
     Requires: fileName is str, the name of a .txt file listing available drones
-    Returns: a .txt file with the updated header, containing time, date, company
+    Ensures: a .txt file with the updated header, containing time, date, company
     name and where the scope is "Drones:"
     """
 
@@ -50,9 +51,10 @@ def writeHeaderD(fileName):
 def writeHeaderP(fileName):
     """Uses the header info from fileName to write the header for a new file,
     updating time and date (if needed)
+    
     Requires: fileName is str, the name of a .txt file containing parcel info,
     with time, day and company info
-    Returns: a .txt file with the updated header info, containing time, date,
+    Ensures: a .txt file with the updated header info, containing time, date,
     company name and where the scope is "Timeline:"
     """
 
@@ -86,10 +88,11 @@ def writeHeaderP(fileName):
 def writeBodyD(info, fileName):
     """Receives a list of updated drone info and writes it a new .txt
     file, where the header contents are fetched from fileName and updated
-    Receives: info is a list of lists, each representing a drone, with the
+    
+    Requires: info is a list of lists, each representing a drone, with the
     updated info after pairing with a parcel; fileName is the original drones
     .txt file
-    Return: a .txt file with the updated header info and the updated info for
+    Ensures: a .txt file with the updated header info and the updated info for
     all drones
     """
     
@@ -111,10 +114,11 @@ def writeBodyD(info, fileName):
 def writeBodyP(info, fileName):
     """Receives a list of drone pairings and writes it on a new .txt file,
     where the header contents are fetched from fileName and updated
-    Receives: info is a list of lists with date, time, client name and drone name,
+    
+    Requires: info is a list of lists with date, time, client name and drone name,
     representing a pairing, or cancelled deliveries; fileName is the original
     parcels .txt file
-    Return: a .txt file with the header info from fileName and the info
+    Ensures: a .txt file with the header info from fileName and the info
     for all the pairings, even the cancelled
     """
     

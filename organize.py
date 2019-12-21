@@ -12,7 +12,7 @@ def updateDrone(parcel, drone):
     
     Requires: parcel is a list of str representing a parcel, drone is a list of
     strings representing a drone allocated to that parcel
-    Returns: a list with the updated distance, autonomy and time for the drone
+    Ensures: a list with the updated distance, autonomy and time for the drone
     """
 
     #updating drone's total distance after delivery

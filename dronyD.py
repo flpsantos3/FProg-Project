@@ -11,12 +11,12 @@ from operator import itemgetter
 
 def allocate(fileNameDrones, fileNameParcels):
     """
-    Assign given drones to given parcels.
+    Assigns given drones to given parcels.
     
     Requires: fileNameDrones, fileNameParcels are str, with the names
     of the files representing the list of drones and parcels, respectively,
     following the format indicated in the project sheet.
-    Ensures: Two output files, respectively, with the listing of scheduled
+    Ensures: Two .txt files, respectively, with the listing of scheduled
     transportation of parcels and the updated listing of drones, following the format
     and naming convention indicated in the project sheet.
     """
