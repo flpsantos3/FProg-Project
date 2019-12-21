@@ -3,21 +3,21 @@
 # 55142 Filipe Santos
 # 28115 Lara Nunes
 
+import constants
 
 def newTime(time):
     """Receives the time from the previous drone list and returns
     the time for the updated list
+    
     Requires: time is str, with the format HHhMM
     Ensures: a string with the time for the updated drone list
     """
 
-    #time is a list in constants.py and contains all possible times,
-    #from 8h00 to 20h00, in 30 minute intervals
-    import constants
-    
+    #time is a list of all possible times, from 8h00 to 20h00,
+    #in 30 minute intervals
     hour = constants.time
 
-    #advancing the time 30 mins or to 8:00, in case the original time is 20:00
+    #advancing the time 30 mins or to 8h00, in case the original time is 20h00
     i = hour.index(time) 
     if time != "20h00":
         newTime = constants.time[i + 1]    
@@ -28,9 +28,11 @@ def newTime(time):
 
 
 def newDate(date):
-    """Receives the date from the previous drone list and returns the date for the updated list
-    Requires: date is str with day-month-year format
-    Ensures: returns a str with day, month and year for the updated list
+    """Receives a date with the format dd-mm-yyyy and returns the date
+    for the following day
+    
+    Requires: date is str with dd-mm-yyyy format
+    Ensures: returns a str with day, month and year for the following day
     """
 
     date = date.split("-")
@@ -60,6 +62,7 @@ def newDate(date):
 def laterTime(time1, time2):
     """Receives two strings representing time (hh:mm) and returns the later
     between them
+    
     Requires: time1, time2 are str, with the format hh:mm
     Ensures: the later between time1 and time 2
     """
@@ -71,10 +74,12 @@ def laterTime(time1, time2):
 
 
 def delivTime(parcel, drone):
-    """Takes a drone and a parcel and returns the time of availability after the
-    parcel is delivered
-    Requires: parcel and drone are lists representing a parcel and a drone, respectively
-    Ensures: the final time (str) indicating the time of availability of
+    """Takes a drone and a parcel and returns the time of availability of the
+    drone after that parcel is delivered
+    
+    Requires: parcel and drone are lists representing a parcel and a drone,
+    respectively
+    Ensures: the final time (str) indicating the time of availability of the
     drone after parcel is delivered
     """
     #chosing the later time
@@ -103,7 +108,9 @@ def delivTime(parcel, drone):
 
 
 def nextDay(firstDate):
-    """Receives a date with the format yyyy-mm-dd and returns the following date
+    """Receives a date with the format yyyy-mm-dd and returns the date for
+    the following day
+    
     Requires: firstdate is str, with the format yyyy-mm-dd
     Ensures: a str with the format yyyy-mm-dd, corresponding to the date after
     firstDate

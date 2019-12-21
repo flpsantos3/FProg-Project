@@ -8,9 +8,11 @@ import readFiles
 
 def updateDrone(parcel, drone):
     """Updates total distance, autonomy and time of availability for a drone with
-    the data from a parcel allocated to that drone
-    Receives: parcel is a list of parcel characteristics, drone is a list of
-    characteristics for a drone alocated to that parcel    Returns: a list with the updated distance, autonomy and time for the drone
+    the info from the parcel allocated to that drone
+    
+    Requires: parcel is a list of str representing a parcel, drone is a list of
+    strings representing a drone allocated to that parcel
+    Returns: a list with the updated distance, autonomy and time for the drone
     """
 
     #updating drone's total distance after delivery
@@ -66,6 +68,7 @@ def updateDrone(parcel, drone):
 def pairPD(parcel, drone):
     """Creates a list with the date and time of delivery, the name of the
     client and the drone allocated to their order
+    
     Requires: parcel is a list of str representing a parcel, drone is a
     list of str representing a drone, with the format from the project statement
     Ensures: a list with date and time of delivery, client name and drone name
@@ -97,16 +100,17 @@ def cancelledP(parcels):
     """Receives a list of parcels that were not allocated to any drone
     and writes date, time and client name on a list where the last
     element is "cancelled"
-    Requires: parcels is a list of str, representing parcels not allocated
-    to any drone
+    
+    Requires: parcels is a list of lists, each representing parcels not
+    allocated to any drone
     Ensures: a list of lists (of str) with the info for all non-allocated
-    parcels and the format [client name, date, time, "cancelled"]
+    parcels and the format [date, time, client name, "cancelled"]
     """
 
     from operator import itemgetter
     
     cancelled = []
-    for i in range(0, len(parcels)):
+    for i in range(len(parcels)):
         cname = parcels[i][0]
         date = parcels[i][2]
         time = parcels[i][3]
@@ -118,15 +122,16 @@ def cancelledP(parcels):
     return cancelled
 
     
-def compareHeader(fileParcels, fileDrones):
+def compareHeaders(fileParcels, fileDrones):
     """Receives two .txt files containing parcels and drones and compares
     their headers, returning True if equal, False otherwise
+    
     Requires: fileParcels, fileDrones are str, the name of two .txt files
     containing info for parcels and drones, respectively
-    Ensures: True if the headers of the file are equal (minus scope),
+    Ensures: True if the headers of the files are equal (minus scope),
     False if any of date, time or company are different
     """
-
+    
     parcHead = readFiles.readHeader(fileParcels)
     dronHead = readFiles.readHeader(fileDrones)
     
@@ -136,50 +141,54 @@ def compareHeader(fileParcels, fileDrones):
     
     else:
         return False
+        parcHead.close()
+        dronHead.close()
+        
 
-def titleHeader(fileName):
-    """Receives a string representing the title of a .txt file containing info
+def compNameHeader(fileName):
+    """Receives a string representing the name of a .txt file containing info
     for parcels or drones and compares its title to the contents of the header
     inside, returning True if they match and False otherwise
+    
     Requires: fileName is str, the name of a .txt file containing parcels or
     drones info
     Ensures: True if the name of the file matches all the contents of its
     header (minus company), False otherwise
     """
-    
-    #removing .txt from the title
-    title = fileName[:-4]
+        
+    #removing .txt from the name
+    name = fileName[:-4]
 
     #separating scope, time and date info
-    title = title.split("_")
-    scopeTime = title[0].split("s")
-    titleScope = scopeTime[0]
-    titleTime = scopeTime[1]
+    name = name.split("_")
+    scopeTime = name[0].split("s")
+    nameScope = scopeTime[0]
+    nameTime = scopeTime[1]
 
-    #formating title date to match the header date info format
-    date = title[1]
+    #formating name date to match the header date info format
+    date = name[1]
     date = date.split("y")
     year = date[0]
     monthday = date[1]
     monthday = monthday.split("m")
     month = monthday[0]
     day = monthday[1]
-    titleDate = day + "-" + month + "-" + year
+    nameDate = day + "-" + month + "-" + year
 
-    header = readFiles.readHeader("drones19h30_2019y11m5.txt")
+    header = readFiles.readHeader(fileName)
     headerTime = header[0]
     headerDate = header[1]
-    #formatting header scope to the same format as title scope
+    #formatting header scope to the same format as name scope
     headerScope = header[-1].lower()
-    headerScope = headerScope[:-2]  #removes "s:" to be able to directly compare the 2 strings
-
-    if headerScope == titleScope and headerTime == titleTime and \
-       headerDate == titleDate:
+    
+    #removes "s:" to be able to directly compare the 2 strings
+    headerScope = headerScope[:-2]
+    
+    if headerScope == nameScope and headerTime == nameTime and \
+       headerDate == nameDate:
         return True
 
     else:
         return False
-    
-    
-    
+        header.close()
     

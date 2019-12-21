@@ -4,10 +4,10 @@
 # 28115 Lara Nunes
 
 import sys
-import times
 import readFiles
 import writeFiles
 import organize
+from operator import itemgetter
 
 def allocate(fileNameDrones, fileNameParcels):
     """
@@ -21,6 +21,38 @@ def allocate(fileNameDrones, fileNameParcels):
     and naming convention indicated in the project sheet.
     """
 
+    class differentHeaders(Exception):
+        """Raised if any of the header elements do not match"""
+        
+    class difNameHeader(Exception):
+        """raised if the info from the file name does not match the contents \
+    of the file header"""
+        
+    try:
+        if organize.compareHeaders(fileNameParcels, fileNameDrones) == False:
+            raise differentHeaders
+        
+    except differentHeaders:
+        print("Input error: inconsistent files", fileNameDrones, "and", fileNameParcels)
+        sys.exit(1)
+    
+    try:
+        if organize.compNameHeader(fileNameDrones) == False:
+            raise difNameHeader
+        
+    except difNameHeader:
+        print("Input error: name and header inconsistent in file", fileNameDrones)
+        sys.exit(1)
+
+    try:
+        if organize.compNameHeader(fileNameParcels) == False:
+            raise difNameHeader
+        
+    except difNameHeader:
+        print("Input error: name and header inconsistent in file", fileNameParcels)
+        sys.exit(1)
+
+        
     #drones data
     dName = 0
     dArea = 1
@@ -41,17 +73,15 @@ def allocate(fileNameDrones, fileNameParcels):
     pTimeMins = -1
 
     #conditions the drones have to respect:
-    #1) the area of operaation must be the same as the parcel
+    #1) the area of operation must be the same as the parcel
     #2) max weight the drone can carry must be > than the weight of the parcel
     #3) maximum distance to base must be > than the distance of the parcel/1000
-    #4) autonomy must be enough to deliver the package and come back: autonomy > 2*distance for the parcel
+    #4) autonomy must be enough to deliver the package and come back:
+        #autonomy > 2*parceldistance
     #5) hour of delivery is the later between the hour for the drone and the parcel
     
     drones = readFiles.readDronesFile(fileNameDrones)
     parcels = readFiles.readParcelsFile(fileNameParcels)
-
-    #saving filetime to use in if clause
-    fileTime = drones[0][0]
 
     #removing header info
     parcels.pop(0)
@@ -60,26 +90,26 @@ def allocate(fileNameDrones, fileNameParcels):
     #cancelled is a list that will contain only parcels that were not allocated
     #after a parcel is allocated, it's removed from cancelled
     cancelled = parcels[:]
+    
     #pairings is an empty list where paired parcels and drones will be stored
     pairings = []
 
-    #converting autonomy (index 5) to float so it can be ordered in reverse
+    #converting autonomy to float so it can be ordered in reverse
     for a in range(len(drones)):
         for b in range(len(drones[a])):
             drones[a][dAutoKm] = float(drones[a][dAutoKm])
 
     #ordering drone lists by choice criteria - time, most autonomy, less distance, name
-    from operator import itemgetter
     drones = sorted(drones,key = lambda d:(d[dHour], -d[dAutoKm], d[dTotalD], d[dName]))
     
     for i in range(len(parcels)):
         pairing = True
         for j in range(len(drones)):
             if pairing: 
-                if drones[j][dArea] == parcels[i][pArea] and int(drones[j][dMaxW]) \
-                   >= int(parcels[i][pWeight]) and int(drones[j][dMaxDmt]) >= \
-                   int(parcels[i][pMaxDmt]) and float(drones[j][dAutoKm]) >= \
-                   float(parcels[i][pMaxDmt])*(2/1000):
+                if drones[j][dArea] == parcels[i][pArea] and \
+                   int(drones[j][dMaxW]) >= int(parcels[i][pWeight]) and \
+                   int(drones[j][dMaxDmt]) >= int(parcels[i][pMaxDmt]) and \
+                   float(drones[j][dAutoKm]) >= float(parcels[i][pMaxDmt])*(2/1000):
                             
                     pairings.append(organize.pairPD(parcels[i], drones[j]))
                     drones[j] = organize.updateDrone(parcels[i], drones[j])
@@ -88,7 +118,7 @@ def allocate(fileNameDrones, fileNameParcels):
                     cancelled.remove(parcels[i])
                     pairing = False
                     
-    #sorting drones by file ordering criteria: time > most autonomy > drone name
+    #sorting drones by file ordering criteria: date > time > most autonomy > drone name
     drones = sorted(drones,key = lambda d:(d[dDate], d[dHour], -d[dAutoKm], d[dName]))
 
     #converting autonomy back to str, to be written in the file
@@ -105,13 +135,16 @@ def allocate(fileNameDrones, fileNameParcels):
     #adding each item of pairings to timeline
     for i in range(0, len(pairings)):
         timeline.append(pairings[i])
-        
-    writeFiles.writeBodyD(drones, fileNameDrones)
-    writeFiles.writeBodyP(timeline, fileNameParcels)
+
+    #writing updated drone info and pairings on exit files
+    dFile = writeFiles.writeBodyD(drones, fileNameDrones)
+    timeFile = writeFiles.writeBodyP(timeline, fileNameParcels)
+
+    print("Drones and timetable files created successfully!")
 
 
-#inputFileName1, inputFileName2 = sys.argv[1:]
+inputFileName1, inputFileName2 = sys.argv[1:]
 
-#allocate(inputFileName1, inputFileName2)
+allocate(inputFileName1, inputFileName2)
 
 

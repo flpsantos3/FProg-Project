@@ -12,8 +12,9 @@ def readDronesFile(fileName):
     Requires: fileName is str, the name of a .txt file listing drones,
     following the format specified in the project sheet.
     Ensures: list whose first element is the header of fileName, followed by
-    lists corresponding to the drones and their characteristics
+    lists corresponding to each of the drones and their characteristics
     """
+    
     outputList = []
 
     header = readHeader(fileName)
@@ -35,10 +36,6 @@ def readDronesFile(fileName):
         for j in range(1, len(drones[i])):
             drones[i][j] = drones[i][j].replace(" ","")
 
-    #each drone is represented by a list with the format [name, operating zone,
-    #max weight, max range from base (m), total distance (km), autonomy (km),
-    #date of availability yyyy-mm-dd, time of availability (hh:mm)]
-
     outputList.extend(drones)
 
     fileIn.close()
@@ -48,12 +45,12 @@ def readDronesFile(fileName):
 
 def readParcelsFile(fileName):
     """
-    Converts a given file listing delivery orders into a collection.
+    Converts a given file listing parcel info into a collection.
     
     Requires: fileName is str, the name of a .txt file listing parcels,
     following the format specified in the project sheet.
     Ensures: list whose first element is the header of fileName, followed by
-    lists corresponding to the clients and the parcels they ordered
+    lists corresponding to each of the clients and the parcels they ordered
     """
     outputList = []
 
@@ -75,11 +72,6 @@ def readParcelsFile(fileName):
     for i in range(len(parcels)):
         for j in range(1, len(parcels[i])):
             parcels[i][j] = parcels[i][j].replace(" ","")
-        
-
-    #each parcel is represent by a list with the format [client name,
-    #delivery zone, date of delivery, hour of delivery, dist to base in meters,
-    #weight, time in minutes to drone base]
 
     outputList.extend(parcels)
 
@@ -105,9 +97,7 @@ def readHeader(fileName):
     fileIn.readline()
     company = fileIn.readline().strip().replace("\n", "")
     #fileIn.readline() - removed this line so the scope is "Parcels:" or "Drones:"
-    #and not the first line of the scope
     scope = fileIn.readline().strip().replace("\n", "")
-
 
     fileIn.close()
 
