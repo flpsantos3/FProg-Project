@@ -1,9 +1,7 @@
 ---
 title: "Relatório de Projeto"
-subtitle: "Grupo 20"
-author:
-- "Filipe Santos, 55142"
-- "Lara Nunes, 28115"
+subtitle: "Fundamentos de Programação"
+author: "**Grupo 20:** Filipe Santos, 55142; Lara Nunes, 28115"
 date: "21/12/2019"
 output: pdf_document
 ---
@@ -12,55 +10,55 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Antes de começar  
+## Antes de começar  
 
 Este projeto foi desenvolvido na sua totalidade por mim, Filipe Santos. A Lara acompanhou o projeto até perto da data de entrega, mostrando-se interessada e disponível quando estávamos juntos. No entanto, acabou por nunca contribuir para o desenvolvimento do projeto, mesmo quando lhe foram delegadas tarefas.  
   
-Ao longo do semestre a Lara foi levantando dúvidas acerca do seu tempo disponível para trabalhar no projeto mas foi combinado que, mesmo não contribuindo com muito, iria contribuir com alguma coisa. No entanto isso não se verificou e, na última semana, a Lara disse-me que iria desistir do projeto, decisão essa que penso lhe ter sido comunicada por email.
+A Lara foi levantando dúvidas ao longo do semestre acerca do tempo que teria disponível para dedicar ao projeto mas foi combinado que, mesmo não contribuindo com muito, tentaria contribuir com alguma coisa. No entanto isso não se verificou e, na última semana, a Lara disse-me que iria desistir do projeto, decisão essa que penso lhe ter sido comunicada por email.
   
-Dito isto, passo a explicar o desenvolvimento do projeto, módulo a módulo.
+Posto isto, passo a explicar o desenvolvimento do projeto, módulo a módulo.
 
-# constants.py - Filipe
+## constants.py - Filipe
 
 Este módulo contém apenas a lista `time` onde estão guardados todos os tempos que os ficheiros podem assumir, das **8h00** às **20h00**, em intervalos de 30 minutos.
 
-# times.py - Filipe
+## times.py - Filipe
 
 Nome do módulo foi alterado de `time` para `times` porque entrava em conflito com o módulo *built-in* `time` do Python. 
 
 Contém 5 funções: `newTime`, `newDate`, `nextDay`, `delivTime` e `laterTime`.
 
-`newDate` e `nextDay` devolvem ambas a data do dia seguinte à data de entrada mas devolvem formatos diferentes (dd-mm-aaaa e aaaa-mm-dd, respetivamente).
+`newDate` e `nextDay` devolvem ambas a data do dia seguinte à data de entrada, apenas em formatos diferentes (dd-mm-aaaa e aaaa-mm-dd, respetivamente). A primeira é utilizada no cabeçalho dos ficheiros, a segunda na data de disponibilidade de cada drone e de entrega de cada pedido.
 
-# readFiles.py - Filipe
+## readFiles.py - Filipe
 
 Contém 3 funções: `readDronesFile`, `readParcelsFile` e `readHeader`.
 
-As primeiras duas são semelhantes e apenas diferem no tipo de ficheiro de entrada. O *stub* da função `readHeader` foi alterado, removendo `fileIn.readline()` para que o âmbito do ficheiro seja corretamente identificado.
+As primeiras duas são semelhantes e apenas diferem no tipo de ficheiro de entrada. O *stub* da função `readHeader` foi alterado, removendo uma das linhas `fileIn.readline()` para que o âmbito do ficheiro seja corretamente identificado.
 
-# writeFiles.py - Filipe
+## writeFiles.py - Filipe
 
-Contém 4 funções: `writeHeaderD` e `writeBodyD` criam e escrevem o cabeçalho e o conteúdo do ficheiro de saída de drones. `writeHeaderP` e `writeBodyP` fazem o mesmo para o ficheiro de saída contendo o atendimento de cada pedido por parte de cada drone.
+Contém 4 funções: `writeHeaderD` e `writeBodyD` criam e escrevem o cabeçalho e o conteúdo do ficheiro de saída de drones, respetivamente. `writeHeaderP` e `writeBodyP` fazem o mesmo para o ficheiro de saída contendo o atendimento de cada pedido por parte de cada drone.
 
-# organize.py - Filipe
+## organize.py - Filipe
 
 Contém 5 funções: `updateDrone`, `pairPD`, `cancelledP`, `compareHeaders` e `compNameHeader`.
 
-As duas primeiras são utilizadas após um pedido ser emparelhado com um drone. `cancelledP` constrói uma lista com pedidos não atendidos. As duas últimas são funções que procuram inconsistências entre cabeçalhos ou entre cabeçalho e nome do ficheiro, respetivamente. São utilizadas na função `allocate` para procurar e levantar exceções.
+As duas primeiras são utilizadas após um pedido ser emparelhado com um drone. `cancelledP` constrói uma lista de pedidos não atendidos. As duas últimas são funções que procuram inconsistências entre cabeçalhos ou entre cabeçalho e nome do ficheiro, respetivamente. São utilizadas na função `allocate` para procurar e levantar exceções.
 
-# dronyD.py - Filipe
+## dronyD.py - Filipe
 
-Função `allocate` funciona como pretendido, criando ficheiros idênticos aos ficheiros de saída para cada *test-set* fornecido pelo professor.
+Função `allocate` funciona como pretendido e cria ficheiros idênticos aos ficheiros de saída para cada *test-set* fornecido pelo professor.
 
-A maior dificuldade esteve na utilização da função *sorted()* e na ordenação em simultâneo por ordem decrescente para autonomia e crescente para os restantes atributos. O problema ficou resolvido convertendo autonomia de *str* para *float* (e novamente para *str* antes da informção ser escrita no ficheiro de saída), para que fosse possível utilizar o seguinte código e ordenar corretamente os drones:
+A maior dificuldade esteve na utilização da função `sorted()` e na ordenação em simultâneo por ordem decrescente para autonomia e crescente para os restantes atributos. O problema ficou resolvido convertendo autonomia de *string* para *float* (e novamente para *string* antes da informção ser escrita no ficheiro de saída), para que fosse possível utilizar o seguinte código e ordenar corretamente os drones:
 ```{r, eval=FALSE}
 drones = sorted(drones,key = lambda d:(d[dHour], -d[dAutoKm], d[dTotalD], d[dName]))
 ```
-Foram criadas as exceções `differentHeaders` e `diffNameHeader` que são levantadas quando os cabeçalhos dos ficheiros não são concordantes ou quando o nome do ficheiro e o conteúdo do cabeçalho desse ficheiro têm informações contraditórias.
+Foram também criadas as exceções `differentHeaders` e `diffNameHeader` que são levantadas, respetivamente, quando os cabeçalhos dos ficheiros de entrada não são concordantes e quando o nome do ficheiro e o conteúdo do cabeçalho desse ficheiro têm informações contraditórias.
 
-# Funções extra
+## Funções extra - Filipe
 
-Para além das funções pedidas no projeto, foi incluído um *print* no final do programa, para fornecer algum *feedback* quando o programa corre na sua totalidade e cria os dois ficheiros de saída.
+Para além das funções pedidas no projeto, foi incluído um *print* no final da função `allocate`, para fornecer algum *feedback* quando o programa corre na sua totalidade e cria os dois ficheiros de saída.
 ```{r eval=FALSE}
 print("Drones and timetable files created successfully!")
 ```
