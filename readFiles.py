@@ -4,7 +4,6 @@
 # 28115 Lara Nunes
 
 
-
 def readDronesFile(fileName):
     """
     Converts a given file listing drones into a collection.
