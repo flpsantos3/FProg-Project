@@ -27,7 +27,25 @@ def allocate(fileNameDrones, fileNameParcels):
     class difNameHeader(Exception):
         """raised if the info from the file name does not match the contents \
     of the file header"""
-        
+
+    try:
+        readFiles.readHeader(fileNameDrones)
+    except FileNotFoundError:
+        print("Didn't find file", fileNameDrones)
+        sys.exit(1)
+    except TypeError:
+        print("Please input the name of a .txt file")
+        sys.exit(1)
+
+    try:
+        readFiles.readHeader(fileNameParcels)
+    except FileNotFoundError:
+        print("Didn't find file", fileNameParcels)
+        sys.exit(1)
+    except TypeError:
+        print("Please input the name of a .txt file")
+        sys.exit(1)
+    
     try:
         if organize.compareHeaders(fileNameParcels, fileNameDrones) == False:
             raise differentHeaders
