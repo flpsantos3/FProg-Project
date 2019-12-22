@@ -127,14 +127,15 @@ def cancelledP(parcels):
 class differentHeaders(Exception):
     """Raised if any of the header elements do not match"""
     
+    
 def compareHeaders(fileParcels, fileDrones):
     """Receives two .txt files containing parcels and drones and compares
-    their headers, returning True if equal, False otherwise
+    their headers, returning True if equal or raising an exception otherwise
     
     Requires: fileParcels, fileDrones are str, the name of two .txt files
     containing info for parcels and drones, respectively
-    Ensures: True if the headers of the files are equal (minus scope),
-    False if any of date, time or company are different
+    Ensures: True if the headers of the files are equal (minus scope), raising
+    the exception differentHeaders if any of date, time or company are different
     """
     
     parcHead = readFiles.readHeader(fileParcels)
@@ -154,15 +155,17 @@ class difNameHeader(Exception):
     """raised if the info from the file name does not match the contents
     of the file header"""
 
+    
 def compNameHeader(fileName):
     """Receives a string representing the name of a .txt file containing info
     for parcels or drones and compares its title to the contents of the header
-    inside, returning True if they match and False otherwise
+    inside, returning True if they match and raising an exception otherwise
     
     Requires: fileName is str, the name of a .txt file containing parcels or
     drones info
     Ensures: True if the name of the file matches all the contents of its
-    header (minus company), False otherwise
+    header (minus company) or raises the exception difNameHeader if they
+    don't
     """
         
     #removing .txt from the name
@@ -200,3 +203,4 @@ def compNameHeader(fileName):
     else:
         raise difNameHeader
         header.close()
+    
