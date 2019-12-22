@@ -27,17 +27,11 @@ def allocate(fileNameDrones, fileNameParcels):
     except FileNotFoundError:
         print("File", fileNameDrones, "could not be found.")
         sys.exit(1)
-    except TypeError:
-        print("Please input the name of a .txt file.")
-        sys.exit(1)
-
+        
     try:
         readFiles.readHeader(fileNameParcels)
     except FileNotFoundError:
         print("File", fileNameParcels, "could not be found.")
-        sys.exit(1)
-    except TypeError:
-        print("Please input the name of a .txt file.")
         sys.exit(1)
     
     try:

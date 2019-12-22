@@ -62,15 +62,12 @@ Para além das funções pedidas no projeto, foi incluído um *print* no final d
 ```{r eval=FALSE}
 print("Drones and timetable files created successfully!")
 ```
-Foram também incluídas duas exceções extra, para exceções do tipo `FileNotFoundError` e `TypeError`, que são levantadas quando um dos ficheiros de entrada não existe ou quando é introduzido um *input* que não seja um ficheiro .txt.
+Foi também incluída uma exceção do tipo `FileNotFoundError`, levantada quando um dos ficheiros de entrada não existe.
 ```{r eval=FALSE}
 try:
   readFiles.readHeader(fileNameDrones)
 except FileNotFoundError:
   print("File", fileNameDrones, "could not be found.")
-  sys.exit(1)
-except TypeError:
-  print("Please input the name of a .txt file.")
   sys.exit(1)
 ```
 
