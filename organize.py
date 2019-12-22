@@ -12,7 +12,8 @@ def updateDrone(parcel, drone):
     
     Requires: parcel is a list of str representing a parcel, drone is a list of
     strings representing a drone allocated to that parcel
-    Ensures: a list with the updated distance, autonomy and time for the drone
+    Ensures: a list representing a drone, with the updated distance, autonomy,
+    time (and date, if needed) of availability
     """
 
     #updating drone's total distance after delivery
@@ -97,8 +98,8 @@ def pairPD(parcel, drone):
 
     
 def cancelledP(parcels):
-    """Receives a list of parcels that were not allocated to any drone
-    and writes date, time and client name on a list where the last
+    """Receives a list of lists representing parcels that were not allocated
+    to any drone and writes date, time and client name on a list where the last
     element is "cancelled"
     
     Requires: parcels is a list of lists, each representing parcels not
@@ -121,6 +122,10 @@ def cancelledP(parcels):
 
     return cancelled
 
+
+class differentHeaders(Exception):
+    """Raised if any of the header elements do not match"""
+    
     
 def compareHeaders(fileParcels, fileDrones):
     """Receives two .txt files containing parcels and drones and compares
@@ -140,11 +145,16 @@ def compareHeaders(fileParcels, fileDrones):
         return True
     
     else:
-        return False
+        raise differentHeaders
         parcHead.close()
         dronHead.close()
-        
 
+
+class difNameHeader(Exception):
+    """raised if the info from the file name does not match the contents
+    of the file header"""
+
+    
 def compNameHeader(fileName):
     """Receives a string representing the name of a .txt file containing info
     for parcels or drones and compares its title to the contents of the header
@@ -189,6 +199,6 @@ def compNameHeader(fileName):
         return True
 
     else:
-        return False
+        raise difNameHeader
         header.close()
     

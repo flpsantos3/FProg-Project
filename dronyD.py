@@ -21,56 +21,42 @@ def allocate(fileNameDrones, fileNameParcels):
     and naming convention indicated in the project sheet.
     """
 
-    class differentHeaders(Exception):
-        """Raised if any of the header elements do not match"""
-        
-    class difNameHeader(Exception):
-        """raised if the info from the file name does not match the contents \
-    of the file header"""
-
     try:
         readFiles.readHeader(fileNameDrones)
     except FileNotFoundError:
-        print("Didn't find file", fileNameDrones)
+        print("File", fileNameDrones, "could not be found.")
         sys.exit(1)
     except TypeError:
-        print("Please input the name of a .txt file")
+        print("Please input the name of a .txt file.")
         sys.exit(1)
 
     try:
         readFiles.readHeader(fileNameParcels)
     except FileNotFoundError:
-        print("Didn't find file", fileNameParcels)
+        print("File", fileNameParcels, "could not be found.")
         sys.exit(1)
     except TypeError:
-        print("Please input the name of a .txt file")
+        print("Please input the name of a .txt file.")
         sys.exit(1)
     
     try:
-        if organize.compareHeaders(fileNameParcels, fileNameDrones) == False:
-            raise differentHeaders
-        
-    except differentHeaders:
-        print("Input error: inconsistent files", fileNameDrones, "and", fileNameParcels)
+        organize.compareHeaders(fileNameParcels, fileNameDrones)
+    except organize.differentHeaders:
+        print("Input error: inconsistent files", fileNameDrones, "and", fileNameParcels + ".")
         sys.exit(1)
     
     try:
-        if organize.compNameHeader(fileNameDrones) == False:
-            raise difNameHeader
-        
-    except difNameHeader:
-        print("Input error: name and header inconsistent in file", fileNameDrones)
+        organize.compNameHeader(fileNameDrones)
+    except organize.difNameHeader:
+        print("Input error: name and header inconsistent in file", fileNameDrones + ".")
         sys.exit(1)
 
     try:
-        if organize.compNameHeader(fileNameParcels) == False:
-            raise difNameHeader
-        
-    except difNameHeader:
-        print("Input error: name and header inconsistent in file", fileNameParcels)
+        organize.compNameHeader(fileNameParcels)
+    except organize.difNameHeader:
+        print("Input error: name and header inconsistent in file", fileNameParcels + ".")
         sys.exit(1)
 
-        
     #drones data
     dName = 0
     dArea = 1
@@ -92,16 +78,19 @@ def allocate(fileNameDrones, fileNameParcels):
 
     #conditions the drones have to respect:
     #1) the area of operation must be the same as the parcel
+        #drones[j][dArea] == parcels[i][pArea]
     #2) max weight the drone can carry must be > than the weight of the parcel
+        #int(drones[j][dMaxW]) >= int(parcels[i][pWeight])
     #3) maximum distance to base must be > than the distance of the parcel/1000
+        #int(drones[j][dMaxDmt]) >= int(parcels[i][pMaxDmt])
     #4) autonomy must be enough to deliver the package and come back:
-        #autonomy > 2*parceldistance
+        #float(drones[j][dAutoKm]) >= float(parcels[i][pMaxDmt])*(2/1000)
     #5) hour of delivery is the later between the hour for the drone and the parcel
     
     drones = readFiles.readDronesFile(fileNameDrones)
     parcels = readFiles.readParcelsFile(fileNameParcels)
 
-    #removing header info
+    #removing header info from the lists
     parcels.pop(0)
     drones.pop(0)
 
@@ -119,7 +108,8 @@ def allocate(fileNameDrones, fileNameParcels):
 
     #ordering drone lists by choice criteria - time, most autonomy, less distance, name
     drones = sorted(drones,key = lambda d:(d[dHour], -d[dAutoKm], d[dTotalD], d[dName]))
-    
+
+    #allocating parcels to drones
     for i in range(len(parcels)):
         pairing = True
         for j in range(len(drones)):

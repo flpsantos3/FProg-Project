@@ -28,7 +28,7 @@ def readDronesFile(fileName):
     
     #spliting each line into a list where each element is a different characteristic
     for i in range(len(drones)):
-        drones[i] = drones[i][:-1]
+        drones[i] = drones[i][:-1] #removes "\n" from the end of the string
         drones[i] = drones[i].split(", ")
 
     #removing excess blank spaces from every element except drone name
@@ -65,7 +65,7 @@ def readParcelsFile(fileName):
 
     #spliting each line into a list where each element is a different characteristic
     for i in range(len(parcels)):
-        parcels[i] = parcels[i][:-1]
+        parcels[i] = parcels[i][:-1] #removes "\n" from the end of the string
         parcels[i] = parcels[i].split(", ")
 
     #removing excess blank spaces from every element except client name

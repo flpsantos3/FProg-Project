@@ -11,7 +11,7 @@ dArea = 1
 dMaxW = 2
 dMaxDm = 3 
 dTotalD = 4
-dAutoKm = 5 #AUTONOMIA NAO BATE CERTO COM FICHEIROS DO STOR
+dAutoKm = 5 
 dDate = 6
 dHour = -1
 
@@ -33,6 +33,7 @@ pTimeMin = -1
 #dronyD.allocate("drones19h30_2019y11m5.txt","parcels19h30_2019y11m5.txt")
     #ver time_deliv + mins == 20
 
+#dronyD.allocate("drones15h30_2019y11m4h.txt","parcels15h30_2019y11m4h.txt")
 
 #Exceptions:
 
@@ -40,7 +41,7 @@ pTimeMin = -1
 #print(organize.compNameHeader("drones15h30_2019y11m4h.txt"))
 #print(readFiles.readHeader("parcels15h30_2019y11m4h.txt"))
 #print(readFiles.readHeader("drones15h30_2019y11m4h.txt"))
-dronyD.allocate("drones15h30_2019y11m4.txt","parcels15h30_2019y11m4.txt")
+#dronyD.allocate("drones15h30_2019y11m4.txt","parcels15h30_2019y11m4.txt")
 
 #print(organize.compNameHeader("drones15h30_2019y11m4n.txt"))
 

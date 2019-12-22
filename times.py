@@ -6,12 +6,15 @@
 import constants
 
 def newTime(time):
-    """Receives the time from the previous drone list and returns
-    the time for the updated list
+    """Receives a time (with the format HHhMM) present in constants.time
+    and returns the next element of that list
     
-    Requires: time is str, with the format HHhMM
-    Ensures: a string with the time for the updated drone list
+    Requires: time is str, with the format HHhMM and present in the list
+    constants.time
+    Ensures: a time string (with format HHhMM), the following element of
+    constants.time
     """
+
 
     #time is a list of all possible times, from 8h00 to 20h00,
     #in 30 minute intervals
@@ -31,8 +34,9 @@ def newDate(date):
     """Receives a date with the format dd-mm-yyyy and returns the date
     for the following day
     
-    Requires: date is str with dd-mm-yyyy format
-    Ensures: returns a str with day, month and year for the following day
+    Requires: date is str, with the format dd-mm-yyyy
+    Ensures: a str with day, month and year for the next date,
+    following the format dd-mm-yyyy
     """
 
     date = date.split("-")

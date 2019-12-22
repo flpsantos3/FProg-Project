@@ -86,7 +86,7 @@ def writeHeaderP(fileName):
     return fileOut
 
 def writeBodyD(info, fileName):
-    """Receives a list of updated drone info and writes it a new .txt
+    """Receives a list of updated drone info and writes it on a new .txt
     file, where the header contents are fetched from fileName and updated
     
     Requires: info is a list of lists, each representing a drone, with the
