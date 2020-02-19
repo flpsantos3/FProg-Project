@@ -2,8 +2,8 @@
 
 ## Context
 
-A certain company wants to use drones to deliver packages or parcels accross various areas of Lisbon. 
-To do that, we need to write a program that receives two `.txt` entry files, **drones** and **parcels**, and returns two `.txt` files, the **drone-parcel pairings** and the **updated drones list**.
+A certain company wants to use drones to deliver packages or parcels across various areas of Lisbon. 
+To do that, they need a program that receives two .txt entry files, **drones** and **parcels**, and returns two .txt files, the **drone-parcel pairings** and the **updated drones list**.
 
 ## The Program
 
@@ -30,7 +30,10 @@ Contains 3 functions:
 
 ### `writeFiles.py`
 
-Contains the functions `writeHeaderD` and `writeBodyD` which create and write the header and content for the updated drones file, respectively. `writeHeaderP` and `writeBodyP` do the same for the pairings output file.
+Contains 4 functions:
+
++ `writeHeaderD` and `writeBodyD`: create and write the header and content for the updated drones file, respectively. 
++ `writeHeaderP` and `writeBodyP`: create and write the header and content for the pairings output file, respectively. 
 
 ### `organize.py`
 
@@ -45,4 +48,4 @@ Contains 5 functions:
 
 Contains the code to be executed and the main function of the program - `allocate`: 
 
-+ `allocate`: receives the drones and parcels `txt` files and creates the pairings and updated drones `.txt` files.
++ `allocate`: receives the drones and parcels .txt files and creates the pairings and updated drones .txt files.
