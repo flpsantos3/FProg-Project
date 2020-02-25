@@ -7,7 +7,7 @@ To do that, they need a program that receives two .txt entry files, **drones** a
 
 ## The Program
 
-There are a total of 5 modules, with the main module being dronyD.py, which contains `allocate`, the main function of the program. dronyD.py can be executed in command line by running the command `python dronyD.py inputFile1 inputFile2`.
+There are a total of 5 modules, with the main module being **dronyD.py**, which contains `allocate`, the main function of the program. **dronyD.py** can be executed in command line by running the command `python dronyD.py inputFile1 inputFile2`.
 
 ### `constants.py`
 
